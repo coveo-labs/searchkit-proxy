@@ -1,0 +1,721 @@
+{
+  "took": 7,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 701,
+      "relation": "eq"
+    },
+    "max_score": 30.005554,
+    "hits": [
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0278488",
+        "_score": 30.005554,
+        "_source": {
+          "type": "movie",
+          "title": "How High",
+          "year": 2001,
+          "rated": "R",
+          "released": "2001-12-21T00:00:00Z",
+          "genres": [
+            "Comedy"
+          ],
+          "directors": [
+            "Jesse Dylan"
+          ],
+          "writers": [
+            "Dustin Lee Abraham"
+          ],
+          "actors": [
+            "Method Man",
+            "Redman",
+            "Obba Babatundé",
+            "Mike Epps"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "Two guys by the name of Silas and Jamal decided to one day smoke something magical, which eventually helps them to ace their college entrance exam.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTk2ODA2MDU3Ml5BMl5BanBnXkFtZTcwODY1NDcxMQ@@._V1_SX300.jpg",
+          "id": "tt0278488",
+          "metascore": 29,
+          "imdbrating": 6.2
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0114996",
+        "_score": 27.13027,
+        "_source": {
+          "type": "movie",
+          "title": "A Chinese Odyssey Part Two: Cinderella",
+          "year": 1994,
+          "rated": null,
+          "released": "1995-02-04T00:00:00Z",
+          "genres": [
+            "Action",
+            "Adventure",
+            "Comedy"
+          ],
+          "directors": [
+            "Jeffrey Lau"
+          ],
+          "writers": [
+            "Jeffrey Lau",
+            "Ch'eng-En Wu"
+          ],
+          "actors": [
+            "Stephen Chow",
+            "Man Tat Ng",
+            "Athena Chu",
+            "Ada Choi"
+          ],
+          "countries": [
+            "Hong Kong"
+          ],
+          "plot": "The convoluted continuation of the adventures of the time-traveling, now-human Monkey King, who attempts to fulfill his divine destiny.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTc3MzM3OTEzOV5BMl5BanBnXkFtZTcwOTcwMzMyMQ@@._V1_SX300.jpg",
+          "id": "tt0114996",
+          "imdbrating": 8.1
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0116426",
+        "_score": 27.13027,
+        "_source": {
+          "type": "movie",
+          "title": "The God of Cookery",
+          "year": 1996,
+          "rated": null,
+          "released": "1996-12-21T00:00:00Z",
+          "genres": [
+            "Action",
+            "Comedy"
+          ],
+          "directors": [
+            "Stephen Chow",
+            "Lik-Chi Lee"
+          ],
+          "writers": [
+            "Stephen Chow",
+            "Man Sang Lo",
+            "Kan-Cheung Tsang"
+          ],
+          "actors": [
+            "Stephen Chow",
+            "Karen Mok",
+            "Nancy Sit",
+            "Man Tat Ng"
+          ],
+          "countries": [
+            "Hong Kong"
+          ],
+          "plot": "The most renowned and feared chef in the world loses his title of God of Cookery because of his pompous attitude. Humbled he sets out to reclaim his title.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTYzMDM0NzI0Ml5BMl5BanBnXkFtZTcwMTc3NDYxMQ@@._V1_SX300.jpg",
+          "id": "tt0116426",
+          "imdbrating": 7.5
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt1230385",
+        "_score": 23.720715,
+        "_source": {
+          "type": "movie",
+          "title": "The Yellow Sea",
+          "year": 2010,
+          "rated": "R",
+          "released": "2011-12-02T00:00:00Z",
+          "genres": [
+            "Crime",
+            "Drama",
+            "Thriller"
+          ],
+          "directors": [
+            "Hong-jin Na"
+          ],
+          "writers": [
+            "Hong-jin Na"
+          ],
+          "actors": [
+            "Jung-woo Ha",
+            "Yun-seok Kim",
+            "Sung Ha Jo",
+            "Man-shik Jeong"
+          ],
+          "countries": [
+            "South Korea",
+            "USA",
+            "Hong Kong"
+          ],
+          "plot": "The story of a cab driver in Yanji City, a region between North Korea, China and Russia. His wife goes to Korea to earn money, but he doesn't hear from her since in 6 months. He plays ...",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BNTQzODg4ODQwNF5BMl5BanBnXkFtZTcwMjA0NTMyNQ@@._V1_SX300.jpg",
+          "id": "tt1230385",
+          "metascore": 78,
+          "imdbrating": 7.4
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0373074",
+        "_score": 20.557117,
+        "_source": {
+          "type": "movie",
+          "title": "Kung Fu Hustle",
+          "year": 2004,
+          "rated": "R",
+          "released": "2005-04-22T00:00:00+01:00",
+          "genres": [
+            "Action",
+            "Comedy",
+            "Crime"
+          ],
+          "directors": [
+            "Stephen Chow"
+          ],
+          "writers": [
+            "Man Keung Chan",
+            "Stephen Chow",
+            "Xin Huo",
+            "Kan-Cheung Tsang"
+          ],
+          "actors": [
+            "Stephen Chow",
+            "Xiaogang Feng",
+            "Wah Yuen",
+            "Zhi Hua Dong"
+          ],
+          "countries": [
+            "Hong Kong",
+            "China"
+          ],
+          "plot": "In Shanghai, China in the 1940s, a wannabe gangster aspires to join the notorious \"Axe Gang\" while residents of a housing complex exhibit extraordinary powers in defending their turf.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMjQwNTMwODU0Ml5BMl5BanBnXkFtZTcwODkzNjgyMQ@@._V1_SX300.jpg",
+          "id": "tt0373074",
+          "metascore": 78,
+          "imdbrating": 7.8
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt1300854",
+        "_score": 19.919247,
+        "_source": {
+          "type": "movie",
+          "title": "Iron Man 3",
+          "year": 2013,
+          "rated": "PG-13",
+          "released": "2013-05-03T00:00:00+01:00",
+          "genres": [
+            "Action",
+            "Adventure",
+            "Fantasy"
+          ],
+          "directors": [
+            "Shane Black"
+          ],
+          "writers": [
+            "Drew Pearce",
+            "Shane Black",
+            "Stan Lee"
+          ],
+          "actors": [
+            "Robert Downey Jr.",
+            "Gwyneth Paltrow",
+            "Don Cheadle",
+            "Guy Pearce"
+          ],
+          "countries": [
+            "USA",
+            "China"
+          ],
+          "plot": "When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMjIzMzAzMjQyM15BMl5BanBnXkFtZTcwNzM2NjcyOQ@@._V1_SX300.jpg",
+          "id": "tt1300854",
+          "metascore": 62,
+          "imdbrating": 7.4
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0808185",
+        "_score": 19.144808,
+        "_source": {
+          "type": "movie",
+          "title": "The Bothersome Man",
+          "year": 2006,
+          "rated": null,
+          "released": "2007-08-24T00:00:00+01:00",
+          "genres": [
+            "Comedy",
+            "Drama",
+            "Fantasy"
+          ],
+          "directors": [
+            "Jens Lien"
+          ],
+          "writers": [
+            "Per Schreiner"
+          ],
+          "actors": [
+            "Trond Fausa",
+            "Petronella Barker",
+            "Per Schaanning",
+            "Birgitte Larsen"
+          ],
+          "countries": [
+            "Norway",
+            "Iceland"
+          ],
+          "plot": "In a strange city where every person seems content beyond reason a new man arrives in town and stirs up trouble by asking too many questions.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTIyNzQ0NTQ4M15BMl5BanBnXkFtZTcwNzQ1MDU1MQ@@._V1_SX300.jpg",
+          "id": "tt0808185",
+          "imdbrating": 7.4
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0013025",
+        "_score": 18.452515,
+        "_source": {
+          "type": "movie",
+          "title": "Cops",
+          "year": 1922,
+          "rated": "Unrated",
+          "released": "1922-03-01T00:00:00Z",
+          "genres": [
+            "Short",
+            "Comedy",
+            "Family"
+          ],
+          "directors": [
+            "Edward F. Cline",
+            "Buster Keaton"
+          ],
+          "writers": [
+            "Buster Keaton",
+            "Edward F. Cline"
+          ],
+          "actors": [
+            "Buster Keaton"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "A series of mishaps manages to make a young man get chased by a big city's entire police force.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTU0OTc2NDA2M15BMl5BanBnXkFtZTcwNjk1ODcxMQ@@._V1_SX300.jpg",
+          "id": "tt0013025",
+          "imdbrating": 7.8
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0265651",
+        "_score": 18.44223,
+        "_source": {
+          "type": "movie",
+          "title": "Ripley's Game",
+          "year": 2002,
+          "rated": "R",
+          "released": "2003-02-07T00:00:00Z",
+          "genres": [
+            "Crime",
+            "Drama",
+            "Mystery"
+          ],
+          "directors": [
+            "Liliana Cavani"
+          ],
+          "writers": [
+            "Charles McKeown",
+            "Liliana Cavani",
+            "Patricia Highsmith"
+          ],
+          "actors": [
+            "Ray Winstone",
+            "John Malkovich",
+            "Uwe Mansshardt",
+            "Hanns Zischler"
+          ],
+          "countries": [
+            "Italy",
+            "UK",
+            "USA"
+          ],
+          "plot": "Tom Ripley persuades a man to commit a murder for a large sum of money. The situation goes out of control, and that man must escape trouble.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTA5MjMyODQzNzNeQTJeQWpwZ15BbWU2MDkwMzg0Nw@@._V1_SX300.jpg",
+          "id": "tt0265651",
+          "imdbrating": 6.7
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0371746",
+        "_score": 18.283587,
+        "_source": {
+          "type": "movie",
+          "title": "Iron Man",
+          "year": 2008,
+          "rated": "PG-13",
+          "released": "2008-05-02T00:00:00+01:00",
+          "genres": [
+            "Action",
+            "Adventure",
+            "Sci-Fi"
+          ],
+          "directors": [
+            "Jon Favreau"
+          ],
+          "writers": [
+            "Mark Fergus",
+            "Hawk Ostby",
+            "Art Marcum",
+            "Matt Holloway",
+            "Stan Lee",
+            "Don Heck",
+            "Larry Lieber",
+            "Jack Kirby"
+          ],
+          "actors": [
+            "Robert Downey Jr.",
+            "Terrence Howard",
+            "Jeff Bridges",
+            "Gwyneth Paltrow"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "When wealthy industrialist Tony Stark is forced to build an armored suit after a life-threatening incident, he ultimately decides to use its technology to fight against evil.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg",
+          "id": "tt0371746",
+          "metascore": 79,
+          "imdbrating": 7.9
+        }
+      }
+    ]
+  },
+  "aggregations": {
+    "facet_bucket_all": {
+      "meta": {},
+      "doc_count": 701,
+      "rated": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 134,
+        "buckets": [
+          {
+            "key": "R",
+            "doc_count": 199
+          },
+          {
+            "key": "PG-13",
+            "doc_count": 88
+          },
+          {
+            "key": "TV-MA",
+            "doc_count": 66
+          },
+          {
+            "key": "Not Rated",
+            "doc_count": 42
+          },
+          {
+            "key": "PG",
+            "doc_count": 42
+          }
+        ]
+      },
+      "actors": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 2580,
+        "buckets": [
+          {
+            "key": "Jennifer Carpenter",
+            "doc_count": 53
+          },
+          {
+            "key": "Michael C. Hall",
+            "doc_count": 53
+          },
+          {
+            "key": "Julie Benz",
+            "doc_count": 36
+          },
+          {
+            "key": "C.S. Lee",
+            "doc_count": 24
+          },
+          {
+            "key": "Desmond Harrington",
+            "doc_count": 24
+          }
+        ]
+      },
+      "genres": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 633,
+        "buckets": [
+          {
+            "key": "Drama",
+            "doc_count": 476
+          },
+          {
+            "key": "Comedy",
+            "doc_count": 198
+          },
+          {
+            "key": "Crime",
+            "doc_count": 175
+          },
+          {
+            "key": "Romance",
+            "doc_count": 134
+          },
+          {
+            "key": "Mystery",
+            "doc_count": 118
+          }
+        ]
+      },
+      "directors": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 658,
+        "buckets": [
+          {
+            "key": "Kim Manners",
+            "doc_count": 13
+          },
+          {
+            "key": "John Dahl",
+            "doc_count": 9
+          },
+          {
+            "key": "Keith Gordon",
+            "doc_count": 8
+          },
+          {
+            "key": "Steve Shill",
+            "doc_count": 8
+          },
+          {
+            "key": "Joseph L. Mankiewicz",
+            "doc_count": 7
+          }
+        ]
+      },
+      "writers": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 1354,
+        "buckets": [
+          {
+            "key": "James Manos Jr.",
+            "doc_count": 53
+          },
+          {
+            "key": "Jeff Lindsay",
+            "doc_count": 46
+          },
+          {
+            "key": "Eric Kripke",
+            "doc_count": 13
+          },
+          {
+            "key": "Steven S. DeKnight",
+            "doc_count": 8
+          },
+          {
+            "key": "Tim Schlattmann",
+            "doc_count": 8
+          }
+        ]
+      },
+      "countries": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 238,
+        "buckets": [
+          {
+            "key": "USA",
+            "doc_count": 479
+          },
+          {
+            "key": "UK",
+            "doc_count": 92
+          },
+          {
+            "key": "France",
+            "doc_count": 43
+          },
+          {
+            "key": "Germany",
+            "doc_count": 31
+          },
+          {
+            "key": "Canada",
+            "doc_count": 30
+          }
+        ]
+      },
+      "metascore": {
+        "buckets": [
+          {
+            "key": 0.0,
+            "doc_count": 0
+          },
+          {
+            "key": 5.0,
+            "doc_count": 0
+          },
+          {
+            "key": 10.0,
+            "doc_count": 0
+          },
+          {
+            "key": 15.0,
+            "doc_count": 1
+          },
+          {
+            "key": 20.0,
+            "doc_count": 3
+          },
+          {
+            "key": 25.0,
+            "doc_count": 3
+          },
+          {
+            "key": 30.0,
+            "doc_count": 10
+          },
+          {
+            "key": 35.0,
+            "doc_count": 12
+          },
+          {
+            "key": 40.0,
+            "doc_count": 9
+          },
+          {
+            "key": 45.0,
+            "doc_count": 15
+          },
+          {
+            "key": 50.0,
+            "doc_count": 18
+          },
+          {
+            "key": 55.0,
+            "doc_count": 29
+          },
+          {
+            "key": 60.0,
+            "doc_count": 25
+          },
+          {
+            "key": 65.0,
+            "doc_count": 36
+          },
+          {
+            "key": 70.0,
+            "doc_count": 34
+          },
+          {
+            "key": 75.0,
+            "doc_count": 34
+          },
+          {
+            "key": 80.0,
+            "doc_count": 19
+          },
+          {
+            "key": 85.0,
+            "doc_count": 9
+          },
+          {
+            "key": 90.0,
+            "doc_count": 4
+          },
+          {
+            "key": 95.0,
+            "doc_count": 0
+          },
+          {
+            "key": 100.0,
+            "doc_count": 1
+          }
+        ]
+      },
+      "type": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "movie",
+            "doc_count": 550
+          },
+          {
+            "key": "episode",
+            "doc_count": 104
+          },
+          {
+            "key": "series",
+            "doc_count": 42
+          },
+          {
+            "key": "game",
+            "doc_count": 5
+          }
+        ]
+      },
+      "imdbrating": {
+        "buckets": [
+          {
+            "key": 1.0,
+            "doc_count": 0
+          },
+          {
+            "key": 2.0,
+            "doc_count": 0
+          },
+          {
+            "key": 3.0,
+            "doc_count": 0
+          },
+          {
+            "key": 4.0,
+            "doc_count": 0
+          },
+          {
+            "key": 5.0,
+            "doc_count": 22
+          },
+          {
+            "key": 6.0,
+            "doc_count": 113
+          },
+          {
+            "key": 7.0,
+            "doc_count": 319
+          },
+          {
+            "key": 8.0,
+            "doc_count": 218
+          },
+          {
+            "key": 9.0,
+            "doc_count": 29
+          },
+          {
+            "key": 10.0,
+            "doc_count": 0
+          }
+        ]
+      }
+    }
+  }
+}

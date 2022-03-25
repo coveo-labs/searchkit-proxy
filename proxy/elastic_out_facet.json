@@ -1,0 +1,729 @@
+{
+  "took": 7,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 118,
+      "relation": "eq"
+    },
+    "max_score": 18.44223,
+    "hits": [
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0265651",
+        "_score": 18.44223,
+        "_source": {
+          "type": "movie",
+          "title": "Ripley's Game",
+          "year": 2002,
+          "rated": "R",
+          "released": "2003-02-07T00:00:00Z",
+          "genres": [
+            "Crime",
+            "Drama",
+            "Mystery"
+          ],
+          "directors": [
+            "Liliana Cavani"
+          ],
+          "writers": [
+            "Charles McKeown",
+            "Liliana Cavani",
+            "Patricia Highsmith"
+          ],
+          "actors": [
+            "Ray Winstone",
+            "John Malkovich",
+            "Uwe Mansshardt",
+            "Hanns Zischler"
+          ],
+          "countries": [
+            "Italy",
+            "UK",
+            "USA"
+          ],
+          "plot": "Tom Ripley persuades a man to commit a murder for a large sum of money. The situation goes out of control, and that man must escape trouble.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTA5MjMyODQzNzNeQTJeQWpwZ15BbWU2MDkwMzg0Nw@@._V1_SX300.jpg",
+          "id": "tt0265651",
+          "imdbrating": 6.7
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt1444429",
+        "_score": 18.283587,
+        "_source": {
+          "type": "episode",
+          "title": "Hungry Man",
+          "year": 2009,
+          "rated": "TV-MA",
+          "released": "2009-11-22T00:00:00Z",
+          "genres": [
+            "Crime",
+            "Drama",
+            "Mystery"
+          ],
+          "directors": [
+            "John Dahl"
+          ],
+          "writers": [
+            "James Manos Jr.",
+            "Jeff Lindsay",
+            "Wendy West"
+          ],
+          "actors": [
+            "Michael C. Hall",
+            "Julie Benz",
+            "Jennifer Carpenter",
+            "Desmond Harrington"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "Dexter stops by Arthur's house for a visit and realizes that though Arthur is in appearance the happy family man, he is in fact terrorizing his family. According to Arthur's son Jonah, they...",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BOTM5OTQyMjI3OF5BMl5BanBnXkFtZTcwMDIwODAwMw@@._V1_SX300.jpg",
+          "id": "tt1444429",
+          "imdbrating": 9.3
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0041959",
+        "_score": 15.688805,
+        "_source": {
+          "type": "movie",
+          "title": "The Third Man",
+          "year": 1949,
+          "rated": "Not Rated",
+          "released": "1949-08-31T00:00:00+01:00",
+          "genres": [
+            "Film-Noir",
+            "Mystery",
+            "Thriller"
+          ],
+          "directors": [
+            "Carol Reed"
+          ],
+          "writers": [
+            "Graham Greene",
+            "Graham Greene"
+          ],
+          "actors": [
+            "Joseph Cotten",
+            "Alida Valli",
+            "Orson Welles",
+            "Trevor Howard"
+          ],
+          "countries": [
+            "UK"
+          ],
+          "plot": "Pulp novelist Holly Martins travels to shadowy, postwar Vienna, only to find himself investigating the mysterious death of an old friend, black-market opportunist Harry Lime.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTYzOTAxNzAyNl5BMl5BanBnXkFtZTcwNjc0OTM0MQ@@._V1_SX300.jpg",
+          "id": "tt0041959",
+          "imdbrating": 8.4
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0209144",
+        "_score": 14.376665,
+        "_source": {
+          "type": "movie",
+          "title": "Memento",
+          "year": 2000,
+          "rated": "R",
+          "released": "2000-10-11T00:00:00+01:00",
+          "genres": [
+            "Mystery",
+            "Thriller"
+          ],
+          "directors": [
+            "Christopher Nolan"
+          ],
+          "writers": [
+            "Christopher Nolan",
+            "Jonathan Nolan"
+          ],
+          "actors": [
+            "Guy Pearce",
+            "Carrie-Anne Moss",
+            "Joe Pantoliano",
+            "Mark Boone Junior"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "A man, suffering from short-term memory loss, uses notes and tattoos to hunt for the man he thinks killed his wife.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTc4MjUxNDAwN15BMl5BanBnXkFtZTcwMDMwNDg3OA@@._V1_SX300.jpg",
+          "id": "tt0209144",
+          "metascore": 80,
+          "imdbrating": 8.6
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0027260",
+        "_score": 13.738983,
+        "_source": {
+          "type": "movie",
+          "title": "After the Thin Man",
+          "year": 1936,
+          "rated": null,
+          "released": "1936-12-25T00:00:00Z",
+          "genres": [
+            "Comedy",
+            "Crime",
+            "Mystery"
+          ],
+          "directors": [
+            "W.S. Van Dyke"
+          ],
+          "writers": [
+            "Frances Goodrich",
+            "Albert Hackett",
+            "Dashiell Hammett"
+          ],
+          "actors": [
+            "William Powell",
+            "Myrna Loy",
+            "James Stewart",
+            "Elissa Landi"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "Nick investigates the case of a missing man and later a murder that is connected to Nora's family.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTMyOTc5OTI5M15BMl5BanBnXkFtZTcwOTg3MTE1MQ@@._V1_SX300.jpg",
+          "id": "tt0027260",
+          "imdbrating": 7.7
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0019130",
+        "_score": 13.738983,
+        "_source": {
+          "type": "movie",
+          "title": "The Man Who Laughs",
+          "year": 1928,
+          "rated": "Not Rated",
+          "released": "1928-11-04T00:00:00Z",
+          "genres": [
+            "Drama",
+            "Horror",
+            "Mystery"
+          ],
+          "directors": [
+            "Paul Leni"
+          ],
+          "writers": [
+            "Victor Hugo",
+            "J. Grubb Alexander"
+          ],
+          "actors": [
+            "Mary Philbin",
+            "Conrad Veidt",
+            "Julius Molnar Jr.",
+            "Olga Baclanova"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "When a proud noble refuses to kiss the hand of the despotic King James in 1690, he is cruelly executed and his son surgically disfigured.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BODI5MjAxOTg4M15BMl5BanBnXkFtZTcwODUzNTkxMQ@@._V1_SX300.jpg",
+          "id": "tt0019130",
+          "imdbrating": 7.8
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0411302",
+        "_score": 13.502726,
+        "_source": {
+          "type": "movie",
+          "title": "Doodlebug",
+          "year": 1997,
+          "rated": null,
+          "released": null,
+          "genres": [
+            "Short",
+            "Fantasy",
+            "Mystery"
+          ],
+          "directors": [
+            "Christopher Nolan"
+          ],
+          "writers": [
+            "Christopher Nolan"
+          ],
+          "actors": [
+            "Jeremy Theobald"
+          ],
+          "countries": [
+            "UK"
+          ],
+          "plot": "In a ratty flat, a man is on his hands and knees, holding a shoe by its toe, trying to kill a bug of some sort that so far has managed to evade him. He keeps up the chase and whacks at it a...",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTc2Nzc1ODUzOV5BMl5BanBnXkFtZTcwODMzNjExMw@@._V1_SX300.jpg",
+          "id": "tt0411302",
+          "imdbrating": 7.1
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0089869",
+        "_score": 13.366341,
+        "_source": {
+          "type": "movie",
+          "title": "The Quiet Earth",
+          "year": 1985,
+          "rated": "R",
+          "released": "1985-10-18T00:00:00+01:00",
+          "genres": [
+            "Drama",
+            "Sci-Fi",
+            "Mystery"
+          ],
+          "directors": [
+            "Geoff Murphy"
+          ],
+          "writers": [
+            "Craig Harrison",
+            "Bill Baer",
+            "Bruno Lawrence",
+            "Sam Pillsbury"
+          ],
+          "actors": [
+            "Bruno Lawrence",
+            "Alison Routledge",
+            "Pete Smith",
+            "Anzac Wallace"
+          ],
+          "countries": [
+            "New Zealand"
+          ],
+          "plot": "A man awakens to find himself alone in the world.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTk2MjM1NjgzNl5BMl5BanBnXkFtZTcwMTc5ODIzMQ@@._V1_SX300.jpg",
+          "id": "tt0089869",
+          "imdbrating": 6.9
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0069281",
+        "_score": 13.225555,
+        "_source": {
+          "type": "movie",
+          "title": "Sleuth",
+          "year": 1972,
+          "rated": "PG",
+          "released": "1972-12-10T00:00:00Z",
+          "genres": [
+            "Mystery",
+            "Thriller"
+          ],
+          "directors": [
+            "Joseph L. Mankiewicz"
+          ],
+          "writers": [
+            "Anthony Shaffer",
+            "Anthony Shaffer"
+          ],
+          "actors": [
+            "Laurence Olivier",
+            "Michael Caine",
+            "Alec Cawthorne",
+            "John Matthews"
+          ],
+          "countries": [
+            "USA",
+            "UK"
+          ],
+          "plot": "A man who loves games and theater invites his wife's lover to meet him, setting up a battle of wits with potentially deadly results.",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTMzODk1MDY3NV5BMl5BanBnXkFtZTcwMzAwNTcxMQ@@._V1_SX300.jpg",
+          "id": "tt0069281",
+          "imdbrating": 8.1
+        }
+      },
+      {
+        "_index": "imdb_movies",
+        "_id": "tt0751139",
+        "_score": 13.1981735,
+        "_source": {
+          "type": "episode",
+          "title": "Humbug",
+          "year": 1995,
+          "rated": "TV-14",
+          "released": "1995-03-31T00:00:00+01:00",
+          "genres": [
+            "Drama",
+            "Mystery",
+            "Sci-Fi"
+          ],
+          "directors": [
+            "Kim Manners"
+          ],
+          "writers": [
+            "Chris Carter",
+            "Darin Morgan"
+          ],
+          "actors": [
+            "David Duchovny",
+            "Gillian Anderson",
+            "Jim Rose",
+            "Wayne Grace"
+          ],
+          "countries": [
+            "USA"
+          ],
+          "plot": "Mulder and Scully find themselves delving into the world of freaks and circus sideshows when Jerald Glazebrook, otherwise known as the Alligator Man, is killed in his swimming pool. Mulder ...",
+          "poster": "https://s3-eu-west-1.amazonaws.com/imdbimages/images/MV5BMTIxNjg1NzE3MV5BMl5BanBnXkFtZTcwMTQ2MzkxMQ@@._V1_SX300.jpg",
+          "id": "tt0751139",
+          "imdbrating": 8.8
+        }
+      }
+    ]
+  },
+  "aggregations": {
+    "facet_bucket_type": {
+      "doc_count": 118,
+      "type": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "episode",
+            "doc_count": 65
+          },
+          {
+            "key": "movie",
+            "doc_count": 45
+          },
+          {
+            "key": "series",
+            "doc_count": 7
+          },
+          {
+            "key": "game",
+            "doc_count": 1
+          }
+        ]
+      }
+    },
+    "facet_bucket_metascore": {
+      "doc_count": 118,
+      "metascore": {
+        "buckets": [
+          {
+            "key": 0.0,
+            "doc_count": 0
+          },
+          {
+            "key": 5.0,
+            "doc_count": 0
+          },
+          {
+            "key": 10.0,
+            "doc_count": 0
+          },
+          {
+            "key": 15.0,
+            "doc_count": 0
+          },
+          {
+            "key": 20.0,
+            "doc_count": 0
+          },
+          {
+            "key": 25.0,
+            "doc_count": 0
+          },
+          {
+            "key": 30.0,
+            "doc_count": 2
+          },
+          {
+            "key": 35.0,
+            "doc_count": 0
+          },
+          {
+            "key": 40.0,
+            "doc_count": 2
+          },
+          {
+            "key": 45.0,
+            "doc_count": 1
+          },
+          {
+            "key": 50.0,
+            "doc_count": 0
+          },
+          {
+            "key": 55.0,
+            "doc_count": 0
+          },
+          {
+            "key": 60.0,
+            "doc_count": 3
+          },
+          {
+            "key": 65.0,
+            "doc_count": 3
+          },
+          {
+            "key": 70.0,
+            "doc_count": 5
+          },
+          {
+            "key": 75.0,
+            "doc_count": 1
+          },
+          {
+            "key": 80.0,
+            "doc_count": 2
+          },
+          {
+            "key": 85.0,
+            "doc_count": 0
+          },
+          {
+            "key": 90.0,
+            "doc_count": 1
+          },
+          {
+            "key": 95.0,
+            "doc_count": 0
+          },
+          {
+            "key": 100.0,
+            "doc_count": 0
+          }
+        ]
+      }
+    },
+    "facet_bucket_all": {
+      "doc_count": 118,
+      "directors": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 78,
+        "buckets": [
+          {
+            "key": "Keith Gordon",
+            "doc_count": 8
+          },
+          {
+            "key": "Steve Shill",
+            "doc_count": 8
+          },
+          {
+            "key": "John Dahl",
+            "doc_count": 7
+          },
+          {
+            "key": "Marcos Siega",
+            "doc_count": 7
+          },
+          {
+            "key": "Tony Goldwyn",
+            "doc_count": 4
+          }
+        ]
+      },
+      "writers": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 155,
+        "buckets": [
+          {
+            "key": "James Manos Jr.",
+            "doc_count": 53
+          },
+          {
+            "key": "Jeff Lindsay",
+            "doc_count": 46
+          },
+          {
+            "key": "Tim Schlattmann",
+            "doc_count": 8
+          },
+          {
+            "key": "Chris Carter",
+            "doc_count": 7
+          },
+          {
+            "key": "Wendy West",
+            "doc_count": 6
+          }
+        ]
+      },
+      "countries": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 14,
+        "buckets": [
+          {
+            "key": "USA",
+            "doc_count": 95
+          },
+          {
+            "key": "UK",
+            "doc_count": 10
+          },
+          {
+            "key": "Canada",
+            "doc_count": 6
+          },
+          {
+            "key": "Italy",
+            "doc_count": 5
+          },
+          {
+            "key": "France",
+            "doc_count": 4
+          }
+        ]
+      }
+    },
+    "facet_bucket_genres": {
+      "meta": {},
+      "doc_count": 701,
+      "genres": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 633,
+        "buckets": [
+          {
+            "key": "Drama",
+            "doc_count": 476
+          },
+          {
+            "key": "Comedy",
+            "doc_count": 198
+          },
+          {
+            "key": "Crime",
+            "doc_count": 175
+          },
+          {
+            "key": "Romance",
+            "doc_count": 134
+          },
+          {
+            "key": "Mystery",
+            "doc_count": 118
+          }
+        ]
+      }
+    },
+    "facet_bucket_imdbrating": {
+      "doc_count": 118,
+      "imdbrating": {
+        "buckets": [
+          {
+            "key": 1.0,
+            "doc_count": 0
+          },
+          {
+            "key": 2.0,
+            "doc_count": 0
+          },
+          {
+            "key": 3.0,
+            "doc_count": 0
+          },
+          {
+            "key": 4.0,
+            "doc_count": 0
+          },
+          {
+            "key": 5.0,
+            "doc_count": 1
+          },
+          {
+            "key": 6.0,
+            "doc_count": 9
+          },
+          {
+            "key": 7.0,
+            "doc_count": 27
+          },
+          {
+            "key": 8.0,
+            "doc_count": 69
+          },
+          {
+            "key": 9.0,
+            "doc_count": 12
+          },
+          {
+            "key": 10.0,
+            "doc_count": 0
+          }
+        ]
+      }
+    },
+    "facet_bucket_released": {
+      "doc_count": 118
+    },
+    "facet_bucket_actors": {
+      "doc_count": 118,
+      "actors": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 278,
+        "buckets": [
+          {
+            "key": "Jennifer Carpenter",
+            "doc_count": 53
+          },
+          {
+            "key": "Michael C. Hall",
+            "doc_count": 53
+          },
+          {
+            "key": "Julie Benz",
+            "doc_count": 36
+          },
+          {
+            "key": "C.S. Lee",
+            "doc_count": 24
+          },
+          {
+            "key": "Desmond Harrington",
+            "doc_count": 24
+          }
+        ]
+      }
+    },
+    "facet_bucket_rated": {
+      "doc_count": 118,
+      "rated": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 14,
+        "buckets": [
+          {
+            "key": "TV-MA",
+            "doc_count": 54
+          },
+          {
+            "key": "R",
+            "doc_count": 19
+          },
+          {
+            "key": "TV-14",
+            "doc_count": 6
+          },
+          {
+            "key": "Approved",
+            "doc_count": 5
+          },
+          {
+            "key": "PG-13",
+            "doc_count": 5
+          }
+        ]
+      }
+    }
+  }
+}

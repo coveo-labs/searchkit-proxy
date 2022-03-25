@@ -1,0 +1,8 @@
+{
+  "apikey":"",
+  "region":"",
+  "org": "",
+  "partialmatch": true,
+  "sentsearchrequest": false,
+  "usegroupby": true
+}

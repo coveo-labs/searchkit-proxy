@@ -1,0 +1,376 @@
+{
+  "aggs": {
+    "facet_bucket_all": {
+      "aggs": {
+        "countries": {
+          "terms": {
+            "field": "countries.keyword",
+            "size": 5
+          }
+        },
+        "directors": {
+          "terms": {
+            "field": "directors.keyword",
+            "size": 5
+          }
+        },
+        "writers": {
+          "terms": {
+            "field": "writers.keyword",
+            "size": 5
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_type": {
+      "aggs": {
+        "type": {
+          "terms": {
+            "field": "type",
+            "size": 5
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_metascore": {
+      "aggs": {
+        "metascore": {
+          "histogram": {
+            "field": "metascore",
+            "interval": 5,
+            "min_doc_count": 0,
+            "extended_bounds": {
+              "min": 0,
+              "max": 100
+            }
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_released": {
+      "aggs": {},
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_genres": {
+      "aggs": {
+        "genres": {
+          "terms": {
+            "field": "genres.keyword",
+            "size": 5
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_rated": {
+      "aggs": {
+        "rated": {
+          "terms": {
+            "field": "rated",
+            "size": 5
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_actors": {
+      "aggs": {
+        "actors": {
+          "terms": {
+            "field": "actors.keyword",
+            "size": 5
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "facet_bucket_imdbrating": {
+      "aggs": {
+        "imdbrating": {
+          "histogram": {
+            "field": "imdbrating",
+            "interval": 1,
+            "min_doc_count": 0,
+            "extended_bounds": {
+              "min": 1,
+              "max": 10
+            }
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "type": "episode"
+                    }
+                  },
+                  {
+                    "term": {
+                      "type": "movie"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "genres.keyword": "Drama"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "size": 10,
+  "post_filter": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "type": "episode"
+                }
+              },
+              {
+                "term": {
+                  "type": "movie"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "genres.keyword": "Drama"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "from": 0,
+  "sort": [
+    {
+      "_score": "desc"
+    }
+  ]
+}

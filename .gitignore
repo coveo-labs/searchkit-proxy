@@ -1,0 +1,30 @@
+.DS_Store
+Thumbs.db
+
+__pycache__
+node_modules/
+dist/
+.env
+
+package-lock.json
+
+*.key
+.config.json
+*.log
+
+build/
+www/
+pcak/
+settings.json
+
+# for big files when building Catalog
+data/**/*.csv
+data/catalog/*.json
+!data/catalog-sample.json
+!data/catalog-sample.json
+
+
+# Next clerical files
+.next/
+.serverless/
+.serverless_nextjs/

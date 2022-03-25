@@ -1,0 +1,151 @@
+{
+  "aggs": {
+    "facet_bucket_all": {
+      "aggs": {
+        "type": {
+          "terms": {
+            "field": "type",
+            "size": 5
+          }
+        },
+        "metascore": {
+          "histogram": {
+            "field": "metascore",
+            "interval": 5,
+            "min_doc_count": 0,
+            "extended_bounds": {
+              "min": 0,
+              "max": 100
+            }
+          }
+        },
+        "genres": {
+          "terms": {
+            "field": "genres.keyword",
+            "size": 5
+          }
+        },
+        "countries": {
+          "terms": {
+            "field": "countries.keyword",
+            "size": 5
+          }
+        },
+        "rated": {
+          "terms": {
+            "field": "rated",
+            "size": 5
+          }
+        },
+        "directors": {
+          "terms": {
+            "field": "directors.keyword",
+            "size": 5
+          }
+        },
+        "writers": {
+          "terms": {
+            "field": "writers.keyword",
+            "size": 5
+          }
+        },
+        "actors": {
+          "terms": {
+            "field": "actors.keyword",
+            "size": 5
+          }
+        },
+        "imdbrating": {
+          "histogram": {
+            "field": "imdbrating",
+            "interval": 1,
+            "min_doc_count": 0,
+            "extended_bounds": {
+              "min": 1,
+              "max": 10
+            }
+          }
+        }
+      },
+      "filter": {
+        "bool": {
+          "must": []
+        }
+      }
+    }
+  },
+  "size": 10,
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "man",
+            "fields": [
+              "title",
+              "genres",
+              "directors",
+              "writers",
+              "actors",
+              "countries",
+              "plot"
+            ],
+            "type": "best_fields",
+            "operator": "and"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "man",
+            "fields": [
+              "title",
+              "genres",
+              "directors",
+              "writers",
+              "actors",
+              "countries",
+              "plot"
+            ],
+            "type": "cross_fields"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "man",
+            "fields": [
+              "title",
+              "genres",
+              "directors",
+              "writers",
+              "actors",
+              "countries",
+              "plot"
+            ],
+            "type": "phrase"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "man",
+            "fields": [
+              "title",
+              "genres",
+              "directors",
+              "writers",
+              "actors",
+              "countries",
+              "plot"
+            ],
+            "type": "phrase_prefix"
+          }
+        }
+      ]
+    }
+  },
+  "from": 0,
+  "sort": [
+    {
+      "_score": "desc"
+    }
+  ]
+}
