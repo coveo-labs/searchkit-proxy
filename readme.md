@@ -111,35 +111,23 @@ If possible, you can send the following to the elastic endpoint:
 6. Create a new `API Gateway`, `REST Service`.
 7. Name it: `CoveoElasticProxy`.
 8. Endpoint type: `Regional`.
-9. Select `Actions`, `Create Method`.
-10. Select `POST`.
-11. Integration type `Lambda Function`.
-12. Select `Lambda Function`, `CoveoElasticProxy`.
-13. Hit `Save`.
-14. Goto `Response`.
-15. Select the `200` response.
-16. Add Header: `Access-Control-Allow-Origin`.
-17. Select `Actions`, `Create Method`.
-18. Select `OPTIONS`.
-19. Method Type: `Mock`.
-CLEAN UP, DO WE NEED ALL OF THIS???
-20. Goto `Response`.
-21. Select the `200` response.
-22. Add Headers:
- * Access-Control-Allow-Headers	  
- * Access-Control-Expose-Headers	  
- * Access-Control-Allow-Origin	  
- * Access-Control-Allow-Methods
-23. Select `Actions`, `Create Resource`.
-24. Select `Proxy Resource`.
-25. Enable `API Gateway CORS`.
-26. Hit `Create Resource`.
-27. Integration Type: `Lambda Function`.
-28. Select `CoveoSearchProxy`.
+9. Select `Actions`, `Create Resource`.
+10. Select `Proxy Resource`.
+11. Enable `API Gateway CORS`.
+12. Hit `Create Resource`.
+13. Integration Type: `Lambda Function`.
+14. Select `CoveoSearchProxy`.
+15. Select `Actions`, `Deploy API`.
+16. Deployment Stage: New Stage.
+17. Stage name: `Prod`.
+18. Hit Deploy.
+19. Copy the `invoke` url. And put it into your `my-app\src\App.js`.
 
-17. Select `Actions`, `Deploy API`.
-18. Deployment Stage: New Stage.
-19. Stage name: `Prod`.
-20. Hit Deploy.
-21. Copy the `invoke` url. And put it into your `my-app\src\App.js`.
-22. 
+### Deploy your my-app into a public URI hosted on AWS s3
+Goto directory `src`
+`npm run build`
+`creates3.cmd` or `creates3.sh`
+
+If you have updates to your app:
+`updates3.cmd` or `updates3.sh`
+
