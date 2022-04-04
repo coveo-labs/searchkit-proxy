@@ -35,7 +35,7 @@ import { gql, useQuery } from '@apollo/client'
 
 import "@elastic/eui/dist/eui_theme_light.css";
 
-let hostedElastic =`https://commerce-demo.es.us-east4.gcp.elastic-cloud.com:9243`;
+let hostedElastic = `https://commerce-demo.es.us-east4.gcp.elastic-cloud.com:9243`;
 let hostedAWS = `https://hh44vnyz1c.execute-api.us-east-1.amazonaws.com/prod`;
 const config = {
   host: hostedElastic,
@@ -120,7 +120,7 @@ const config = {
       label: "Actors",
       multipleSelect: true
     }),
-    
+
     new RangeFacet({
       field: "imdbrating",
       identifier: "imdbrating",
@@ -184,22 +184,21 @@ const HitsList = ({ data }) => (
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
-  variables["analytics"]={tags:["Wim"]};
   const { results, loading } = useSearchkitSDK(config, variables);
-  
+
   function changeSearch() {
-    if (config['host']==hostedElastic) {
-      config['host']=hostedAWS;
+    if (config['host'] == hostedElastic) {
+      config['host'] = hostedAWS;
       if (document) {
         if (document.getElementById('myChangeButton')) {
-          document.getElementById('myChangeButton').innerHTML = 'Search: Coveo';    
+          document.getElementById('myChangeButton').innerHTML = 'Search: Coveo';
         }
       }
     } else {
-      config['host']=hostedElastic;
+      config['host'] = hostedElastic;
       if (document) {
         if (document.getElementById('myChangeButton')) {
-      document.getElementById('myChangeButton').innerHTML = 'Search: Elastic';
+          document.getElementById('myChangeButton').innerHTML = 'Search: Elastic';
         }
       }
     }
@@ -220,7 +219,7 @@ function App() {
             </EuiTitle>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
-            <button id='myChangeButton' onClick={changeSearch} style={{borderRadius: '3px',background: 'aliceblue',border: '1px solid red',padding: '5px'}}>Search: Elastic</button>
+            <button id='myChangeButton' onClick={changeSearch} style={{ borderRadius: '3px', background: 'aliceblue', border: '1px solid red', padding: '5px' }}>Search: Elastic</button>
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>
