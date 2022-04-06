@@ -9,12 +9,17 @@
     "@searchkit/client": "3.0.0-canary.49",
     "@searchkit/elastic-ui": "3.0.0-canary.49",
     "@searchkit/sdk": "3.0.0-canary.49",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.23",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
     "graphql": "15.4.0",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "5.0.0",
     "serverless": "^3.10.0",
+    "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

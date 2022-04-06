@@ -17,6 +17,12 @@ After copying the repo, use:
 npm install --legacy-peer-deps
 ```
 
+And since we want to use Typescript:
+
+```cmd
+npm install --save typescript @types/node @types/react @types/react-dom @types/jest --legacy-peer-deps
+```
+
 ## The Index
 
 We are using the movie database provided [here](https://github.com/searchkit/searchkit/tree/next/examples/indexer).
@@ -41,6 +47,8 @@ Create a license and use the [Coveo Platform](https://platform.cloud.coveo.com/)
 | poster     | String     |                                     |
 | metascore  | Integer 32 |                                     |
 | imdbrating | Decimal    |                                     |
+
+Or import the `snapshot` with the [json](index/addFieldsSnapshot.json).
 
 ### Create a Push source
 
@@ -103,7 +111,7 @@ We need to sent that seperately to Coveo, using the `CoveoUA.js` library.
 If we are capable of submitting a `VisitorId` to the request:
 Put it in the `settings.json`, key `sentsearchrequest` (true or false).
 
-The response to the front end includes the `hits.searchUid` which contains the `searchUid` from the Coveo response.
+The response to the front end includes the `hits.searchUid` which contains the `searchUid` from the Coveo response. Since the SearchKit is filtering out this property. It is also set on the result level.
 You can use that in your subsequent Analytics calls.
 
 If possible, you can send the following to the elastic endpoint:

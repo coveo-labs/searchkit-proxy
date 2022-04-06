@@ -1,15 +1,18 @@
+import React from "react";
 import {
   DateRangeFacet,
   MultiMatchQuery,
   RangeFacet,
-  RefinementSelectFacet
+  RefinementSelectFacet,
 } from "@searchkit/sdk";
+import { AddResultButton, buttonResultActionEnum } from "./components/ActionButtonResultComponent";
+import { AddButton, buttonActionEnum } from "./components/ActionButtonComponent";
 import {
   FacetsList,
   SearchBar,
   ResetSearchButton,
   SelectedFilters,
-  Pagination
+  Pagination,
 } from "@searchkit/elastic-ui";
 import { useSearchkitVariables } from "@searchkit/client";
 import { useSearchkitSDK } from "@searchkit/sdk/lib/esm/react-hooks";
@@ -28,27 +31,27 @@ import {
   EuiHorizontalRule,
   EuiText,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
 } from "@elastic/eui";
 
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery } from "@apollo/client";
 
 import "@elastic/eui/dist/eui_theme_light.css";
 
 let hostedElastic = `https://commerce-demo.es.us-east4.gcp.elastic-cloud.com:9243`;
 let hostedAWS = `https://hh44vnyz1c.execute-api.us-east-1.amazonaws.com/prod`;
-const config = {
+let config = {
   host: hostedElastic,
   connectionOptions: {
     apiKey: "NWF4c2VYOEJzRDhHMzlEX1JDejU6YnJXaS1XWjlSZ2F5ek1Cc3V4aXV6dw==",
   },
   index: "imdb_movies",
   sortOptions: [
-    { id: 'relevance', label: 'Relevance', field: '_score' },
-    { id: 'released', label: 'Recent Releases', field: { released: 'desc' } }
+    { id: "relevance", label: "Relevance", field: "_score" },
+    { id: "released", label: "Recent Releases", field: { released: "desc" } },
   ],
   hits: {
-    fields: ["title"]
+    fields: ["title"],
   },
   query: new MultiMatchQuery({
     fields: [
@@ -58,15 +61,15 @@ const config = {
       "writers",
       "actors",
       "countries",
-      "plot"
-    ]
+      "plot",
+    ],
   }),
   facets: [
     new RefinementSelectFacet({
       field: "type",
       identifier: "type",
       label: "Type",
-      multipleSelect: true
+      multipleSelect: true,
     }),
     new RangeFacet({
       field: "metascore",
@@ -75,50 +78,50 @@ const config = {
       range: {
         min: 0,
         max: 100,
-        interval: 5
-      }
+        interval: 5,
+      },
     }),
     new DateRangeFacet({
       field: "released",
       identifier: "released",
-      label: "Released"
+      label: "Released",
     }),
 
     new RefinementSelectFacet({
       field: "genres.keyword",
       identifier: "genres",
       label: "Genres",
-      multipleSelect: true
+      multipleSelect: true,
     }),
 
     new RefinementSelectFacet({
       field: "countries.keyword",
       identifier: "countries",
-      label: "Countries"
+      label: "Countries",
     }),
     new RefinementSelectFacet({
       field: "rated",
       identifier: "rated",
       label: "Rated",
-      multipleSelect: true
+      multipleSelect: true,
     }),
     new RefinementSelectFacet({
       field: "directors.keyword",
       identifier: "directors",
-      label: "Directors"
+      label: "Directors",
     }),
 
     new RefinementSelectFacet({
       field: "writers.keyword",
       identifier: "writers",
-      label: "Writers"
+      label: "Writers",
     }),
 
     new RefinementSelectFacet({
       field: "actors.keyword",
       identifier: "actors",
       label: "Actors",
-      multipleSelect: true
+      multipleSelect: true,
     }),
 
     new RangeFacet({
@@ -128,11 +131,12 @@ const config = {
       range: {
         interval: 1,
         max: 10,
-        min: 1
-      }
-    })
-  ]
+        min: 1,
+      },
+    }),
+  ],
 };
+
 
 const HitsList = ({ data }) => (
   <EuiFlexGrid>
@@ -171,34 +175,59 @@ const HitsList = ({ data }) => (
                   </ul>
                 </EuiText>
               </EuiFlexItem>
+
+            </EuiFlexGroup>
+            <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
+              <AddResultButton
+                caption="AddToCart"
+                action={buttonResultActionEnum.addToCart}
+                result={hit}
+              ></AddResultButton>
+              <AddResultButton
+                caption="RemoveFromCart"
+                action={buttonResultActionEnum.removeFromCart}
+                result={hit}
+              ></AddResultButton>
+              <AddResultButton
+                caption="AddView"
+                action={buttonResultActionEnum.addView}
+                result={hit}
+              ></AddResultButton>
+              <AddResultButton
+                caption="AddDetails"
+                action={buttonResultActionEnum.addDetails}
+                result={hit}
+              ></AddResultButton>
             </EuiFlexGroup>
           </EuiFlexItem>
+
         </EuiFlexGroup>
-      </EuiFlexItem>
+
+      </EuiFlexItem >
     ))}
-  </EuiFlexGrid>
+  </EuiFlexGrid >
 );
-
-
 
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
+  //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
 
   function changeSearch() {
-    if (config['host'] == hostedElastic) {
-      config['host'] = hostedAWS;
+    if (config["host"] == hostedElastic) {
+      config["host"] = hostedAWS;
       if (document) {
-        if (document.getElementById('myChangeButton')) {
-          document.getElementById('myChangeButton').innerHTML = 'Search: Coveo';
+        if (document.getElementById("myChangeButton")) {
+          document.getElementById("myChangeButton").innerHTML = "Search: Coveo";
         }
       }
     } else {
-      config['host'] = hostedElastic;
+      config["host"] = hostedElastic;
       if (document) {
-        if (document.getElementById('myChangeButton')) {
-          document.getElementById('myChangeButton').innerHTML = 'Search: Elastic';
+        if (document.getElementById("myChangeButton")) {
+          document.getElementById("myChangeButton").innerHTML =
+            "Search: Elastic";
         }
       }
     }
@@ -219,7 +248,23 @@ function App() {
             </EuiTitle>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
-            <button id='myChangeButton' onClick={changeSearch} style={{ borderRadius: '3px', background: 'aliceblue', border: '1px solid red', padding: '5px' }}>Search: Elastic</button>
+            <AddButton
+              caption="Add Impressions"
+              action={buttonActionEnum.impressionsEvent}
+              results={results}
+            ></AddButton>
+            <button
+              id="myChangeButton"
+              onClick={changeSearch}
+              style={{
+                borderRadius: "3px",
+                background: "aliceblue",
+                border: "1px solid red",
+                padding: "5px",
+              }}
+            >
+              Search: Elastic
+            </button>
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>

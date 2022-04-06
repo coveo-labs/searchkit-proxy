@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+settings.ts
 # production
 /build
 

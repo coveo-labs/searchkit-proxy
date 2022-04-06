@@ -342,6 +342,7 @@ def createResponse(response, useGroupBy):
     source = {}
     #put all the fields in the source
     source['id']=result['UniqueId']
+    source['searchQueryUid']=response['searchUid']
     for attr, value in result['raw'].items():
         source[attr] = value
     rec["_source"] = source
