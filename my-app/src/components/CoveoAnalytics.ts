@@ -135,6 +135,19 @@ const sentSearchEvent = (contents: any) => {
   coveoua('send', 'pageview', getOriginsAndCustomData());
 };
 
+const getQubitVisitor = () => {
+  const __qubitVisitorId = localStorage.getItem("__qubitVisitorId");
+  return __qubitVisitorId;
+}
+
+const isEcViewSent = () => {
+  const isSent = sessionStorage.getItem("ecViewSent");
+  return isSent !== null ? true : false;
+}
+
+const setEcViewSent = () => {
+  sessionStorage.setItem("ecViewSent", "true");
+}
 
 
 const productClick = (product, searchUid: string, recommendationStrategy: string = '', callBack) => {
@@ -270,6 +283,8 @@ export const emitBasket = (transactionId?: string) => {
 const CoveoAnalytics = {
   addProductForPurchase,
   addToCart,
+  isEcViewSent,
+  setEcViewSent,
   detailView,
   getAnalyticsProductData,
   getOriginsAndCustomData,
@@ -278,6 +293,7 @@ const CoveoAnalytics = {
   productClick,
   removeFromCart,
   setActionPurchase,
+  getQubitVisitor,
   sentSearchEvent,
   emitUV,
   emitBasket,

@@ -12,6 +12,13 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.EnableProxyIndicator {
+  display: inline-block;
+  float: left;
+  padding-right: 50px;
+  vertical-align: middle;
+  padding-top: 5px;
+}
 
 .App-header {
   background-color: #282c34;

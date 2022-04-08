@@ -7,16 +7,34 @@ interface ButtonProps {
   caption: string;
   result: any;
   action: buttonResultActionEnum;
+  main: boolean;
+  summary: any;
+  position: number;
+  enabled: boolean;
+}
+
+interface ButtonState {
+  result: any;
 }
 
 export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
   addView = "AddView",
+  purchase = "Purchase",
   addDetails = "AddDetails",
+  addClick = "AddClick",
 }
 
-export class AddResultButton extends Component<ButtonProps> {
+export class AddResultButton extends Component<ButtonProps, ButtonState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      result: this.props.result,
+    };
+  }
+
   createProductData() {
     let product = [];
     product["sku"] =
@@ -24,7 +42,7 @@ export class AddResultButton extends Component<ButtonProps> {
       this.props.result.fields["id"] ||
       "";
     product["name"] = this.props.result.fields["title"] || "";
-    product["category"] = this.props.result.fields["type"] || "";
+    product["category"] = [this.props.result.fields["type"] || ""];
     //We will use the imdbrating as a price
     product["price"] = this.props.result.fields["imdbrating"] || 0.0;
     product["url"] =
@@ -50,6 +68,19 @@ export class AddResultButton extends Component<ButtonProps> {
       currency = "USD";
     CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
     CoveoUA.emitUser();
+  }
+
+  purchase() {
+    const product = this.createProductData();
+    const revenue = 0;
+    const tax = 0;
+    CoveoUA.addProductForPurchase(product);
+    CoveoUA.setActionPurchase({
+      id: this.props.result.fields["searchQueryUid"],
+      revenue,
+      shipping: 0,
+      tax,
+    });
   }
 
   addDetails() {
@@ -85,6 +116,18 @@ export class AddResultButton extends Component<ButtonProps> {
     CoveoUA.emitBasket();
   }
 
+  addClick() {
+    const product = this.createProductData();
+    CoveoUA.emitUV("ecSearchItemClick", {
+      query: {
+        id: CoveoUA.getQubitVisitor(),
+        term: this.props.summary.query,
+      },
+      productId: product["sku"],
+      position: this.props.position,
+    });
+  }
+
   addAction() {
     //check action type
     if (this.props.action === buttonResultActionEnum.addDetails) {
@@ -99,11 +142,27 @@ export class AddResultButton extends Component<ButtonProps> {
     if (this.props.action === buttonResultActionEnum.removeFromCart) {
       this.removeFromCart();
     }
+    if (this.props.action === buttonResultActionEnum.purchase) {
+      this.purchase();
+    }
+    if (this.props.action === buttonResultActionEnum.addClick) {
+      this.addClick();
+    }
   }
+
+  componentDidUpdate() {
+    //this.render();
+  }
+
   render() {
+    /*let enabled = CoveoUA.isEcViewSent();
+    if (this.props.main) {
+      enabled = true;
+    }*/
     return (
       <EuiButton
         style={{ marginRight: "10px" }}
+        isDisabled={!this.props.enabled}
         onClick={() => this.addAction()}
       >
         {this.props.caption}

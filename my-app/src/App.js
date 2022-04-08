@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
+import CoveoUA from "./components/CoveoAnalytics";
+
 import {
   DateRangeFacet,
   MultiMatchQuery,
@@ -7,6 +10,7 @@ import {
 } from "@searchkit/sdk";
 import { AddResultButton, buttonResultActionEnum } from "./components/ActionButtonResultComponent";
 import { AddButton, buttonActionEnum } from "./components/ActionButtonComponent";
+import { EnableProxy } from "./components/EnableProxy";
 import {
   FacetsList,
   SearchBar,
@@ -37,11 +41,10 @@ import {
 import { gql, useQuery } from "@apollo/client";
 
 import "@elastic/eui/dist/eui_theme_light.css";
+import "./App.css";
 
-let hostedElastic = `https://commerce-demo.es.us-east4.gcp.elastic-cloud.com:9243`;
-let hostedAWS = `https://hh44vnyz1c.execute-api.us-east-1.amazonaws.com/prod`;
 let config = {
-  host: hostedElastic,
+  host: getHostElastic(),
   connectionOptions: {
     apiKey: "NWF4c2VYOEJzRDhHMzlEX1JDejU6YnJXaS1XWjlSZ2F5ek1Cc3V4aXV6dw==",
   },
@@ -138,9 +141,14 @@ let config = {
 };
 
 
-const HitsList = ({ data }) => (
+function changeResult(ref, result) {
+  ref.result = result;
+}
+
+
+const HitsList = ({ data, ecView }) => (
   <EuiFlexGrid>
-    {data?.hits.items.map((hit) => (
+    {data?.hits.items.map((hit, index) => (
       <EuiFlexItem key={hit.id}>
         <EuiFlexGroup gutterSize="xl">
           <EuiFlexItem>
@@ -179,24 +187,50 @@ const HitsList = ({ data }) => (
             </EuiFlexGroup>
             <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
               <AddResultButton
+                caption="Add Search Click"
+                action={buttonResultActionEnum.addClick}
+                result={hit}
+                main={false}
+                position={index}
+                summary={data.summary}
+                enabled={ecView}
+              ></AddResultButton>
+
+              <AddResultButton
                 caption="AddToCart"
                 action={buttonResultActionEnum.addToCart}
                 result={hit}
+                main={false}
+                position={index}
+                summary={data.summary}
+                enabled={ecView}
               ></AddResultButton>
               <AddResultButton
                 caption="RemoveFromCart"
                 action={buttonResultActionEnum.removeFromCart}
                 result={hit}
+                main={false}
+                position={index}
+                summary={data.summary}
+                enabled={ecView}
               ></AddResultButton>
               <AddResultButton
-                caption="AddView"
-                action={buttonResultActionEnum.addView}
+                caption="Purchase"
+                action={buttonResultActionEnum.purchase}
                 result={hit}
+                main={false}
+                position={index}
+                summary={data.summary}
+                enabled={ecView}
               ></AddResultButton>
               <AddResultButton
-                caption="AddDetails"
+                caption="AddDetails (Product)"
                 action={buttonResultActionEnum.addDetails}
                 result={hit}
+                main={false}
+                position={index}
+                summary={data.summary}
+                enabled={ecView}
               ></AddResultButton>
             </EuiFlexGroup>
           </EuiFlexItem>
@@ -213,25 +247,19 @@ function App() {
   let variables = useSearchkitVariables();
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
+  const [ecViewSent, setEcViewSent] = useState(0);
 
-  function changeSearch() {
-    if (config["host"] == hostedElastic) {
-      config["host"] = hostedAWS;
-      if (document) {
-        if (document.getElementById("myChangeButton")) {
-          document.getElementById("myChangeButton").innerHTML = "Search: Coveo";
-        }
-      }
-    } else {
-      config["host"] = hostedElastic;
-      if (document) {
-        if (document.getElementById("myChangeButton")) {
-          document.getElementById("myChangeButton").innerHTML =
-            "Search: Elastic";
-        }
-      }
-    }
+  function changeHost(host) {
+    config["host"] = host;
   }
+
+  function ecSent() {
+    setEcViewSent(true);
+  }
+
+
+
+
 
   return (
     <EuiPage>
@@ -249,22 +277,29 @@ function App() {
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <AddButton
-              caption="Add Impressions"
-              action={buttonActionEnum.impressionsEvent}
+              caption="Add View Event (mandatory)"
+              action={buttonActionEnum.viewEvent}
+              main={true}
+              enabled={true}
+              results={results}
+              callback={(e) => ecSent()}
+            ></AddButton>
+            <AddButton
+              caption="Add Search Event"
+              action={buttonActionEnum.searchEvent}
+              main={false}
+              enabled={ecViewSent}
               results={results}
             ></AddButton>
-            <button
-              id="myChangeButton"
-              onClick={changeSearch}
-              style={{
-                borderRadius: "3px",
-                background: "aliceblue",
-                border: "1px solid red",
-                padding: "5px",
-              }}
-            >
-              Search: Elastic
-            </button>
+            <AddButton
+              caption="Add Impressions/Shown Event"
+              action={buttonActionEnum.impressionsEvent}
+              main={false}
+              enabled={ecViewSent}
+              results={results}
+            ></AddButton>
+
+            <EnableProxy enableCaption="Using Coveo" disableCaption="Using Elastic" setHost={(e) => changeHost(e)} ></EnableProxy>
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>
@@ -277,7 +312,7 @@ function App() {
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            <HitsList data={results} />
+            <HitsList data={results} ecView={ecViewSent} />
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={results} />
             </EuiFlexGroup>
