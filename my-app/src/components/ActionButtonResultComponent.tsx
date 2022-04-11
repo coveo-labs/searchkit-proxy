@@ -11,17 +11,18 @@ interface ButtonProps {
   summary: any;
   position: number;
   enabled: boolean;
+  updateCart: boolean;
 }
 
 interface ButtonState {
   result: any;
+  count: number;
 }
 
 export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
   addView = "AddView",
-  purchase = "Purchase",
   addDetails = "AddDetails",
   addClick = "AddClick",
 }
@@ -29,36 +30,62 @@ export enum buttonResultActionEnum {
 export class AddResultButton extends Component<ButtonProps, ButtonState> {
   constructor(props) {
     super(props);
+    const cartItems = CoveoUA.getCart();
 
     this.state = {
       result: this.props.result,
+      count: cartItems.length,
     };
   }
 
   createProductData() {
-    let product = [];
+    let product = {};
     product["sku"] =
       this.props.result.fields["permanentid"] ||
       this.props.result.fields["id"] ||
       "";
     product["name"] = this.props.result.fields["title"] || "";
-    product["category"] = [this.props.result.fields["type"] || ""];
+    product["category"] = this.props.result.fields["type"] || "";
     //We will use the imdbrating as a price
     product["price"] = this.props.result.fields["imdbrating"] || 0.0;
     product["url"] =
       this.props.result.fields["uri"] || this.props.result.fields["id"] || "";
     product["image"] = this.props.result.fields["poster"] || "";
     product["plot"] = this.props.result.fields["plot"] || "";
+    product["id"] = product["sku"];
     return product;
   }
   addToCart() {
+    const searchUid = this.props.result.fields["searchQueryUid"];
+    let cart = CoveoUA.getCart();
     const product = this.createProductData();
-    CoveoUA.addToCart(product);
+    //@ts-ignore
+    CoveoUA.addToCart([product]);
+    cart.push(product);
+    CoveoUA.setCart(cart);
+    CoveoUA.emitBasket(searchUid, cart, "add", product);
+    this.setState({ count: cart.length });
+    //Also UV action
   }
 
   removeFromCart() {
+    let cart = CoveoUA.getCart();
+    const searchUid = this.props.result.fields["searchQueryUid"];
     const product = this.createProductData();
+    //@ts-ignore
     CoveoUA.removeFromCart(product);
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i]["sku"] === product["sku"]) {
+        cart.splice(i, 1);
+        //Sent the UA event
+        CoveoUA.emitBasket(searchUid, cart, "remove", product);
+        i--;
+      }
+    }
+    //cart.remove(product);
+    CoveoUA.setCart(cart);
+    this.setState({ count: cart.length });
+    //Also UV action
   }
 
   addView() {
@@ -68,19 +95,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
       currency = "USD";
     CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
     CoveoUA.emitUser();
-  }
-
-  purchase() {
-    const product = this.createProductData();
-    const revenue = 0;
-    const tax = 0;
-    CoveoUA.addProductForPurchase(product);
-    CoveoUA.setActionPurchase({
-      id: this.props.result.fields["searchQueryUid"],
-      revenue,
-      shipping: 0,
-      tax,
-    });
   }
 
   addDetails() {
@@ -113,7 +127,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
       eventType: "detail",
     });
 
-    CoveoUA.emitBasket();
+    //CoveoUA.emitBasket();
   }
 
   addClick() {
@@ -142,9 +156,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     if (this.props.action === buttonResultActionEnum.removeFromCart) {
       this.removeFromCart();
     }
-    if (this.props.action === buttonResultActionEnum.purchase) {
-      this.purchase();
-    }
     if (this.props.action === buttonResultActionEnum.addClick) {
       this.addClick();
     }
@@ -159,13 +170,18 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     if (this.props.main) {
       enabled = true;
     }*/
+    let caption = this.props.caption;
+    if (this.props.updateCart) {
+      caption += " (" + this.state.count + ")";
+    }
+
     return (
       <EuiButton
         style={{ marginRight: "10px" }}
         isDisabled={!this.props.enabled}
         onClick={() => this.addAction()}
       >
-        {this.props.caption}
+        {caption}
       </EuiButton>
     );
   }

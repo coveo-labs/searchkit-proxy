@@ -194,43 +194,37 @@ const HitsList = ({ data, ecView }) => (
                 position={index}
                 summary={data.summary}
                 enabled={ecView}
+                updateCart={false}
               ></AddResultButton>
-
               <AddResultButton
-                caption="AddToCart"
+                caption="Add To Cart"
                 action={buttonResultActionEnum.addToCart}
                 result={hit}
                 main={false}
                 position={index}
                 summary={data.summary}
                 enabled={ecView}
+                updateCart={true}
               ></AddResultButton>
               <AddResultButton
-                caption="RemoveFromCart"
+                caption="Remove From Cart"
                 action={buttonResultActionEnum.removeFromCart}
                 result={hit}
                 main={false}
                 position={index}
                 summary={data.summary}
                 enabled={ecView}
+                updateCart={true}
               ></AddResultButton>
               <AddResultButton
-                caption="Purchase"
-                action={buttonResultActionEnum.purchase}
-                result={hit}
-                main={false}
-                position={index}
-                summary={data.summary}
-                enabled={ecView}
-              ></AddResultButton>
-              <AddResultButton
-                caption="AddDetails (Product)"
+                caption="Add Details (Product)"
                 action={buttonResultActionEnum.addDetails}
                 result={hit}
                 main={false}
                 position={index}
                 summary={data.summary}
                 enabled={ecView}
+                updateCart={false}
               ></AddResultButton>
             </EuiFlexGroup>
           </EuiFlexItem>
@@ -294,6 +288,20 @@ function App() {
             <AddButton
               caption="Add Impressions/Shown Event"
               action={buttonActionEnum.impressionsEvent}
+              main={false}
+              enabled={ecViewSent}
+              results={results}
+            ></AddButton>
+            <AddButton
+              caption="Sent Basket"
+              action={buttonActionEnum.emitBasketEvent}
+              main={false}
+              enabled={ecViewSent}
+              results={results}
+            ></AddButton>
+            <AddButton
+              caption="Purchase"
+              action={buttonActionEnum.purchaseEvent}
               main={false}
               enabled={ecViewSent}
               results={results}

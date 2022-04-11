@@ -90,7 +90,7 @@ const removeFromCart = (products: AnalyticsProductData[] | AnalyticsProductData)
   addToCart(products, 'remove');
 };
 
-const getReferrer = () => {
+/*const getReferrer = () => {
   // in a Single Page App (SPA), we can't rely on document.referrer when navigating on the site. 
   let referrer = sessionStorage.getItem('path.current');
   // there may be a delay for the route in sessionStorage (path.current) to be updated, so we compare it with href, 
@@ -103,7 +103,7 @@ const getReferrer = () => {
     referrer = document.referrer;
   }
   return referrer;
-};
+};*/
 
 const detailView = (product) => {
   // Send the "pageview" event (measurement) 
@@ -147,6 +147,16 @@ const isEcViewSent = () => {
 
 const setEcViewSent = () => {
   sessionStorage.setItem("ecViewSent", "true");
+}
+
+
+const getCart = () => {
+  const cart = sessionStorage.getItem("Cart");
+  return cart !== null ? JSON.parse(cart) : [];
+}
+
+const setCart = (items) => {
+  sessionStorage.setItem("Cart", JSON.stringify(items));
 }
 
 
@@ -215,69 +225,89 @@ const roundPrice = (price) => {
   return Math.ceil(price * 100) / 100;
 };
 
-export const emitBasket = (transactionId?: string) => {
+const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail, action) => {
+  const basketItem = {
+    basket: {
+      id: cartId,
+      quantity: length,
+      total: { value: total, currency }
+    },
+    product: {
+      productId: detail['sku'],
+      name: detail['name'],
+      url: detail['url'],
+      sku: detail['sku'],
+      originalPrice: { value: detail['price'], currency, baseValue: detail['price'], baseCurrency: currency },
+      price: { value: detail['price'], currency, baseValue: detail['price'], baseCurrency: currency },
+      stock: 1,
+      images: [detail['image']],
+      category: [detail['category']],
+      categories: [detail['category']],
+    },
+    quantity: 1,
+    subtotalIncludingTax: { value: tax, currency },
+    subtotal: {
+      value: subtotal, currency
+    }
 
-  // //We need to fix this cartStore stuff
-  // const cartState = cartStore.getState();
-  // const currency = 'USD';
-  // const TAX_RATE = 1.05;
+  };
+  return basketItem;
+}
 
-  // const cartId = cartState.cartId;
-  // const cartQuantity = (cartState.items || []).reduce((prev, cur) => (prev + cur.quantity), 0);
-  // const cartSubTotal = roundPrice((cartState.items || []).reduce((prev, cur) => (prev + (cur.detail.ec_promo_price * cur.quantity)), 0));
-  // const cartTotal = roundPrice(cartSubTotal * TAX_RATE);
+export const emitBasket = (cartId: string, products: any, action: string, newproduct: any, transactionId?: string) => {
 
-  // (cartState.items || []).forEach(item => {
-  //   const detail = item.detail;
+  //We need to fix this cartStore stuff
+  const currency = 'USD';
+  const TAX_RATE = 1.05;
 
-  //   const subtotal = roundPrice(detail.ec_promo_price * item.quantity);
-  //   const subtotalIncludingTax = roundPrice(subtotal * TAX_RATE);
+  const cartQuantity = products.length;
+  //@ts-ignore
+  const cartSubTotal = roundPrice((products || []).reduce((prev, cur) => (prev + (cur['price'] * 1)), 0));
+  const cartTotal = roundPrice(cartSubTotal * TAX_RATE);
 
-  //   const basketItem = {
-  //     basket: {
-  //       id: cartId,
-  //       quantity: cartQuantity,
-  //       total: { value: cartTotal, currency }
-  //     },
-  //     product: {
-  //       productId: detail.permanentid,
-  //       name: detail.ec_name,
-  //       url: detail.uri,
-  //       sku: item.sku,
-  //       originalPrice: { value: detail.ec_price, currency, baseValue: detail.ec_price, baseCurrency: currency },
-  //       price: { value: detail.ec_promo_price, currency, baseValue: detail.ec_promo_price, baseCurrency: currency },
-  //       stock: item.quantity,
-  //       images: [detail.ec_images[0]],
-  //       category: detail.cat_categories,
-  //       categories: [detail.cat_categories.join(' > ')],
-  //     },
-  //     quantity: item.quantity,
-  //     subtotalIncludingTax: { value: subtotalIncludingTax, currency },
-  //     subtotal: {
-  //       value: subtotal, currency
-  //     }
-  //   };
-  //   if (transactionId) {
-  //     basketItem['transaction'] = { id: transactionId };
-  //   }
-  //   emitUV(transactionId ? 'ecBasketItemTransaction' : 'ecBasketItem', basketItem);
-  // });
+  if (action === '') {
+    (products || []).forEach(item => {
+      const detail = item;
 
-  // const basketSummary = {
-  //   basket: {
-  //     subtotal: { value: cartSubTotal, currency }, // the basket value *before* the application of taxes, discounts, promotions, shipping costs
-  //     subtotalIncludingTax: { value: cartTotal, currency },  //the basket subtotal, including tax, but before the application of discounts, promotions, shipping costs, 
-  //     total: { value: cartTotal, currency },
-  //     quantity: cartQuantity
-  //   }
-  // };
-  // if (transactionId) {
-  //   basketSummary['transaction'] = { id: transactionId };
-  // }
+      const subtotal = roundPrice(detail['price'] * 1);
+      const subtotalIncludingTax = roundPrice(subtotal * TAX_RATE);
+      let basketItem = createBasketItem(cartId, cartQuantity, cartTotal, subtotal, subtotalIncludingTax, currency, detail, '');
 
-  // if (cartState.items?.length) {
-  //   emitUV(transactionId ? 'ecBasketTransactionSummary' : 'ecBasketSummary', basketSummary);
-  // }
+      if (transactionId) {
+        basketItem['transaction'] = { id: transactionId };
+      }
+
+      emitUV(transactionId ? 'ecBasketItemTransaction' : 'ecBasketItem', basketItem);
+
+    });
+  }
+
+  const basketSummary = {
+    basket: {
+      subtotal: { value: cartSubTotal, currency }, // the basket value *before* the application of taxes, discounts, promotions, shipping costs
+      subtotalIncludingTax: { value: cartTotal, currency },  //the basket subtotal, including tax, but before the application of discounts, promotions, shipping costs, 
+      total: { value: cartTotal, currency },
+      quantity: cartQuantity
+    }
+  };
+  if (transactionId) {
+    basketSummary['transaction'] = { id: transactionId };
+  }
+
+  if (action !== '') {
+    const subtotal = roundPrice(newproduct['price'] * 1);
+    const subtotalIncludingTax = roundPrice(subtotal * TAX_RATE);
+
+    let basketItem = createBasketItem(cartId, cartQuantity, cartTotal, subtotal, subtotalIncludingTax, currency, newproduct, action);
+    basketItem['action'] = action;
+    emitUV('ecBasketItemAction', basketItem);
+    emitUV('ecBasketSummary', basketSummary);
+
+  } else {
+    if (products.length) {
+      emitUV(transactionId ? 'ecBasketTransactionSummary' : 'ecBasketSummary', basketSummary);
+    }
+  }
 };
 
 const CoveoAnalytics = {
@@ -297,6 +327,8 @@ const CoveoAnalytics = {
   sentSearchEvent,
   emitUV,
   emitBasket,
+  setCart,
+  getCart,
   emitUser,
 };
 
