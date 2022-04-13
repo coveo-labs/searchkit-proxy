@@ -175,6 +175,7 @@ export class AddButton extends Component<ButtonProps> {
       this.addImpressionsEvent();
     }
   }
+
   render() {
     let enabled = this.props.enabled;
     let caption = this.props.caption;

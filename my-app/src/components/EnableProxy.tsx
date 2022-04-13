@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { EuiTitle } from "@elastic/eui";
+import CoveoUA from "./CoveoAnalytics";
+
 import {
   getQubitTrackerId,
   getQubitExperienceId,
   getHostCoveo,
   getHostElastic,
 } from "./settings";
+import { textChangeRangeIsUnchanged } from "typescript";
 
 interface EnableProxyProps {
   enableCaption: string;
   disableCaption: string;
   setHost: any;
+  setCallbackUrl: any;
 }
 
 interface EnableProxyState {
@@ -22,6 +26,7 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
   private caption: string;
   _isMounted = false;
   enableCoveo = false;
+  callbackUrl = "";
 
   constructor(props) {
     super(props);
@@ -32,19 +37,18 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     };
   }
 
-  async getResponse(url) {
+  async getResponse(url, method) {
     const request = new Request(url);
 
-    const response = await fetch(request);
+    const response = await fetch(request, { method: method });
     const results = await response.json();
     return results;
   }
 
-  setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  sentCallback() {
+    if (this.callbackUrl !== "") {
+      this.props.setCallbackUrl(this.callbackUrl);
+    }
   }
 
   async checkSearchEnablement() {
@@ -52,7 +56,8 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     //Check with https://sse.qubit.com/ if we need to enable Elastic or Coveo
     //We only do this once for each session
     let contextId = "";
-    const __qubitVisitorId = localStorage.getItem("__qubitVisitorId");
+    const __qubitVisitorId = CoveoUA.getCookie("_qubitTracker");
+
     //If we do not have a visitorId,  it will be generated
     if (__qubitVisitorId !== null) {
       contextId = `contextId=${__qubitVisitorId}`;
@@ -60,8 +65,8 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     }
     //Call sse
     // with &preview --> you will always get the Variantion defined
-    const url = `https://sse.qubit.com/v1/${getQubitTrackerId()}/experiences?${contextId}${getQubitExperienceId()}&preview`;
-    const results = await this.getResponse(url);
+    const url = `https://sse.qubit.com/v1/${getQubitTrackerId()}/experiences?${contextId}${getQubitExperienceId()}`;
+    const results = await this.getResponse(url, "GET");
     console.log("From EnableProxy.tsx");
     console.log(results);
     if (results) {
@@ -70,6 +75,8 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
           //isControl: false means there will be no payload
           if (experience["payload"]["enableCoveo"] === true) {
             this.enableCoveo = true;
+            this.callbackUrl = experience["callback"];
+            this.sentCallback();
           }
           return false;
         });
@@ -77,7 +84,7 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
       //Store the contextId as key
       if (contextId === "") {
         localStorage.setItem("__qubitVisitorId", results["contextId"]);
-        this.setCookie("_qubitTracker", results["contextId"], 365);
+        CoveoUA.setCookie("_qubitTracker", results["contextId"], 365);
       }
     }
     if (this._isMounted)

@@ -43,6 +43,8 @@ import { gql, useQuery } from "@apollo/client";
 import "@elastic/eui/dist/eui_theme_light.css";
 import "./App.css";
 
+let sseCallbackUrl = '';
+
 let config = {
   host: getHostElastic(),
   connectionOptions: {
@@ -239,9 +241,11 @@ const HitsList = ({ data, ecView }) => (
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
+
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
   const [ecViewSent, setEcViewSent] = useState(0);
+  const [ecViewSentDone, setEcViewSentDone] = useState(1);
 
   function changeHost(host) {
     config["host"] = host;
@@ -249,8 +253,22 @@ function App() {
 
   function ecSent() {
     setEcViewSent(true);
+    setEcViewSentDone(false);
+    //Also sent the sseCallbackUrl
+    getResponse(sseCallbackUrl, "POST");
   }
 
+  function setSSECallbackUrl(url) {
+    sseCallbackUrl = url;
+  }
+
+
+  async function getResponse(url, method) {
+    const request = new Request(url);
+
+    const response = await fetch(request, { method: method });
+    return response;
+  }
 
 
 
@@ -274,7 +292,7 @@ function App() {
               caption="Add View Event (mandatory)"
               action={buttonActionEnum.viewEvent}
               main={true}
-              enabled={true}
+              enabled={ecViewSentDone}
               results={results}
               callback={(e) => ecSent()}
             ></AddButton>
@@ -307,7 +325,7 @@ function App() {
               results={results}
             ></AddButton>
 
-            <EnableProxy enableCaption="Using Coveo" disableCaption="Using Elastic" setHost={(e) => changeHost(e)} ></EnableProxy>
+            <EnableProxy enableCaption="Using Coveo" disableCaption="Using Elastic" setCallbackUrl={(e) => setSSECallbackUrl(e)} setHost={(e) => changeHost(e)} ></EnableProxy>
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>

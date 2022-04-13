@@ -213,6 +213,18 @@ export const getVisitorId = () => {
   return visitorId;
 };
 
+export const getCookie = function (name) {
+  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  if (match) return match[2];
+}
+
+export const setCookie = function (cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=./";
+}
+
 export const emitUV = (type, payload) => {
   window['uv'].emit(type, payload);
 };
@@ -327,6 +339,8 @@ const CoveoAnalytics = {
   sentSearchEvent,
   emitUV,
   emitBasket,
+  getCookie,
+  setCookie,
   setCart,
   getCart,
   emitUser,
