@@ -193,7 +193,10 @@ export const getVisitorId = () => {
 
   let visitorId = window['coveo_visitorId'];
   if (!visitorId) {
-    visitorId = window['coveoanalytics']?.getCurrentClient()?.visitorId;
+    visitorId = (
+      window['coveoanalytics']?.getCurrentClient()?.visitorId
+      || getCookie('_qubitTracker')
+    );
   }
 
   if (visitorId) {
