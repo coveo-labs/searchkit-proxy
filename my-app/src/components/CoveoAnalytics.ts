@@ -140,15 +140,6 @@ const getQubitVisitor = () => {
   return __qubitVisitorId;
 }
 
-const isEcViewSent = () => {
-  const isSent = sessionStorage.getItem("ecViewSent");
-  return isSent !== null ? true : false;
-}
-
-const setEcViewSent = () => {
-  sessionStorage.setItem("ecViewSent", "true");
-}
-
 
 const getCart = () => {
   const cart = sessionStorage.getItem("Cart");
@@ -325,8 +316,6 @@ export const emitBasket = (cartId: string, products: any, action: string, newpro
 const CoveoAnalytics = {
   addProductForPurchase,
   addToCart,
-  isEcViewSent,
-  setEcViewSent,
   detailView,
   getAnalyticsProductData,
   getOriginsAndCustomData,

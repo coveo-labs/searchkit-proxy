@@ -22,7 +22,6 @@ interface ButtonState {
 export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
-  addView = "AddView",
   addDetails = "AddDetails",
   addClick = "AddClick",
 }
@@ -88,15 +87,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     //Also UV action
   }
 
-  addView() {
-    CoveoUA.logPageView();
-    const language = "en-us",
-      country = "US",
-      currency = "USD";
-    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
-    CoveoUA.emitUser();
-  }
-
   addDetails() {
     //Detailed page
     const product = this.createProductData();
@@ -150,9 +140,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     if (this.props.action === buttonResultActionEnum.addToCart) {
       this.addToCart();
     }
-    if (this.props.action === buttonResultActionEnum.addView) {
-      this.addView();
-    }
     if (this.props.action === buttonResultActionEnum.removeFromCart) {
       this.removeFromCart();
     }
@@ -178,7 +165,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     return (
       <EuiButton
         style={{ marginRight: "10px" }}
-        isDisabled={!this.props.enabled}
         onClick={() => this.addAction()}
       >
         {caption}

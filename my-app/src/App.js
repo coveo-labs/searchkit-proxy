@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -148,7 +148,7 @@ function changeResult(ref, result) {
 }
 
 
-const HitsList = ({ data, ecView }) => (
+const HitsList = ({ data }) => (
   <EuiFlexGrid>
     {data?.hits.items.map((hit, index) => (
       <EuiFlexItem key={hit.id}>
@@ -195,7 +195,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={false}
               ></AddResultButton>
               <AddResultButton
@@ -205,7 +204,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={true}
               ></AddResultButton>
               <AddResultButton
@@ -215,7 +213,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={true}
               ></AddResultButton>
               <AddResultButton
@@ -225,7 +222,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={false}
               ></AddResultButton>
             </EuiFlexGroup>
@@ -244,17 +240,23 @@ function App() {
 
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
-  const [ecViewSent, setEcViewSent] = useState(0);
-  const [ecViewSentDone, setEcViewSentDone] = useState(1);
+
+  // Emit View on page load
+  useEffect(() => {
+    CoveoUA.logPageView();
+    const language = "en-us",
+      country = "US",
+      currency = "USD";
+    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
+    CoveoUA.emitUser();
+  }, [])
+
 
   function changeHost(host) {
     config["host"] = host;
   }
 
   function ecSent() {
-    setEcViewSent(true);
-    setEcViewSentDone(false);
-    //Also sent the sseCallbackUrl
     getResponse(sseCallbackUrl, "POST");
   }
 
@@ -289,39 +291,27 @@ function App() {
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <AddButton
-              caption="Add View Event (mandatory)"
-              action={buttonActionEnum.viewEvent}
-              main={true}
-              enabled={ecViewSentDone}
-              results={results}
-              callback={(e) => ecSent()}
-            ></AddButton>
-            <AddButton
               caption="Add Search Event"
               action={buttonActionEnum.searchEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
             <AddButton
               caption="Add Impressions/Shown Event"
               action={buttonActionEnum.impressionsEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
             <AddButton
               caption="Sent Basket"
               action={buttonActionEnum.emitBasketEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
             <AddButton
               caption="Purchase"
               action={buttonActionEnum.purchaseEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
 
@@ -338,7 +328,7 @@ function App() {
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            <HitsList data={results} ecView={ecViewSent} />
+            <HitsList data={results} />
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={results} />
             </EuiFlexGroup>

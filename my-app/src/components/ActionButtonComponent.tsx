@@ -109,15 +109,6 @@ export class AddButton extends Component<ButtonProps> {
     });
   }
 
-  addView() {
-    CoveoUA.logPageView();
-    const language = "en-us",
-      country = "US",
-      currency = "USD";
-    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
-    CoveoUA.emitUser();
-  }
-
   emitBasket() {
     let products = [];
     const searchUid =
@@ -149,7 +140,6 @@ export class AddButton extends Component<ButtonProps> {
 
   addAction() {
     if (this.props.main) {
-      CoveoUA.setEcViewSent();
       if (this.props.callback) {
         this.props.callback();
       }
@@ -167,29 +157,20 @@ export class AddButton extends Component<ButtonProps> {
     if (this.props.action === buttonActionEnum.searchEvent) {
       this.addSearchEvent();
     }
-    //check action type
-    if (this.props.action === buttonActionEnum.viewEvent) {
-      this.addView();
-    }
     if (this.props.action === buttonActionEnum.impressionsEvent) {
       this.addImpressionsEvent();
     }
   }
 
   render() {
-    let enabled = this.props.enabled;
     let caption = this.props.caption;
     if (this.props.action === buttonActionEnum.purchaseEvent) {
       //const cartItems = CoveoUA.getCart();
       //caption += " (" + cartItems.length + ")";
     }
-    if (this.props.main) {
-      enabled = true;
-    }
     return (
       <EuiButton
         style={{ marginRight: "10px" }}
-        isDisabled={!enabled}
         onClick={() => this.addAction()}
       >
         {caption}
