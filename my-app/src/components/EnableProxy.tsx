@@ -73,10 +73,11 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
       if (results["experiencePayloads"].length > 0) {
         results["experiencePayloads"].map((experience) => {
           //isControl: false means there will be no payload
+          this.callbackUrl = experience["callback"];
+          this.sentCallback();
+
           if (experience["payload"]["enableCoveo"] === true) {
             this.enableCoveo = true;
-            this.callbackUrl = experience["callback"];
-            this.sentCallback();
           }
           return false;
         });
