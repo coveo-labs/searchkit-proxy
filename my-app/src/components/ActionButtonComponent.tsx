@@ -11,6 +11,7 @@ interface ButtonProps {
   main: boolean;
   enabled: boolean;
   callback: any;
+  hide: boolean;
 }
 
 export enum buttonActionEnum {
@@ -170,7 +171,7 @@ export class AddButton extends Component<ButtonProps> {
     }
     return (
       <EuiButton
-        style={{ marginRight: "10px" }}
+        style={{ marginRight: "10px", display: this.props.hide ? 'none' : 'initial' }}
         onClick={() => this.addAction()}
       >
         {caption}

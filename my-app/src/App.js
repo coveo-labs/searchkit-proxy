@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -234,6 +234,24 @@ const HitsList = ({ data }) => (
   </EuiFlexGrid >
 );
 
+const BindKeyupHandler = (props) => {
+  const attachHandler = useCallback(node => {
+    if (!node) return;
+    node.addEventListener('keyup', evt => {
+      if (/enter/i.test(evt.key || evt.code)) {
+        const hiddenSearchCta = document.querySelector('.euiPageHeaderSection button[style*="display: none"]');
+        hiddenSearchCta?.click();
+      }
+    })
+  }, [])
+
+  return (
+    <div ref={attachHandler} >
+      {props.children}
+    </div>
+  )
+}
+
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
@@ -272,13 +290,12 @@ function App() {
     return response;
   }
 
-
-
-
   return (
     <EuiPage>
       <EuiPageSideBar>
-        <SearchBar loading={loading} />
+        <BindKeyupHandler>
+          <SearchBar loading={loading} />
+        </BindKeyupHandler>
         <EuiHorizontalRule margin="m" />
         <Facets data={results} loading={loading} />
       </EuiPageSideBar>
@@ -295,6 +312,7 @@ function App() {
               action={buttonActionEnum.searchEvent}
               main={false}
               results={results}
+              hide={true}
             ></AddButton>
             <AddButton
               caption="Add Impressions/Shown Event"
