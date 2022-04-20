@@ -100,8 +100,6 @@ export class AddButton extends Component<ButtonProps> {
 
   addShown(products: any) {
     CoveoUA.emitUV("ecSearchItemsShown", {
-      type: "organic",
-      outcome: "success",
       query: {
         id: CoveoUA.getQubitVisitor(),
         term: this.props.results.summary.query,
