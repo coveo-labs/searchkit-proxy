@@ -9,7 +9,7 @@ interface ButtonProps {
   results: any;
   action: buttonActionEnum;
   main: boolean;
-  enabled: boolean;
+  coveoEnabled: boolean;
   callback: any;
   hide: boolean;
 }
@@ -40,8 +40,8 @@ export class AddButton extends Component<ButtonProps> {
   addSearchEvent() {
     const product = []; //this.createProductData();
     CoveoUA.sentSearchEvent(product);
-    const searchUid =
-      this.props.results.hits.items[0].fields["searchQueryUid"] || "";
+    const searchResultItems = this.props.results.hits.items
+    
     CoveoUA.emitUV("ecSearch", {
       type: "organic",
       outcome: "success",
@@ -50,7 +50,15 @@ export class AddButton extends Component<ButtonProps> {
         term: this.props.results.summary.query,
       },
       resultCount: this.props.results.summary.total,
-      source: "proxy-search",
+      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search',
+    });
+
+    CoveoUA.emitUV("ecSearchItemsShown", {
+      query: {
+        id: CoveoUA.getQubitVisitor(),
+        term: this.props.results.summary.query,
+      },
+      productIds: searchResultItems.map(({ id }) => id),
     });
   }
 
@@ -80,13 +88,11 @@ export class AddButton extends Component<ButtonProps> {
   }
 
   addImpressionsEvent() {
-    let products = [];
     const searchUid =
       this.props.results.hits.items[0].fields["searchQueryUid"] || "";
     if (searchUid !== "") {
       this.props.results.hits.items.forEach((product, index) => {
         const product_parsed = this.createProductData(product.fields);
-        products.push(product_parsed["sku"]);
         CoveoUA.impressions(
           { ...product_parsed, position: index + 1 },
           searchUid
@@ -95,19 +101,7 @@ export class AddButton extends Component<ButtonProps> {
       coveoua("ec:setAction", "impression");
       coveoua("send", "event", CoveoUA.getOriginsAndCustomData());
     }
-    this.addShown(products);
   }
-
-  addShown(products: any) {
-    CoveoUA.emitUV("ecSearchItemsShown", {
-      query: {
-        id: CoveoUA.getQubitVisitor(),
-        term: this.props.results.summary.query,
-      },
-      productIds: products,
-    });
-  }
-
   emitBasket() {
     let products = [];
     const searchUid =

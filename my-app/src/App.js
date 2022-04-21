@@ -142,11 +142,9 @@ let config = {
   ],
 };
 
-
 function changeResult(ref, result) {
   ref.result = result;
 }
-
 
 const HitsList = ({ data }) => (
   <EuiFlexGrid>
@@ -313,6 +311,7 @@ function App() {
               main={false}
               results={results}
               hide={true}
+              coveoEnabled={!/elastic/.test(config.host)}
             ></AddButton>
             <AddButton
               caption="Add Impressions/Shown Event"
