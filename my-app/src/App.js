@@ -241,7 +241,7 @@ const BindKeyupHandler = (props) => {
         const hiddenSearchCta = document.querySelector('.euiPageHeaderSection button[style*="display: none"]');
         hiddenSearchCta?.click();
       }
-    })
+    });
   }, []);
 
   return (

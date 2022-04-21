@@ -34,7 +34,7 @@ export const getAnalyticsProductData = (product, sku = '', quantity = 0, withQua
     group: product.ec_item_group_id,
     price: product.ec_promo_price,
     category: category,
-    variant: sku
+    variant: sku,
   };
 
 
@@ -59,7 +59,7 @@ const getOriginsAndCustomData = (dataToMerge?: any) => {
   return {
     custom,
     searchHub: sessionStorage.getItem('pageType'),
-    tab: originLevel2
+    tab: originLevel2,
   };
 };
 
@@ -155,7 +155,7 @@ const productClick = (product, searchUid: string, recommendationStrategy: string
   initCoveo();
   const productData = {
     ...getAnalyticsProductData(product),
-    position: product.index + 1
+    position: product.index + 1,
   };
   coveoua('ec:addProduct', productData);
   coveoua('ec:setAction', 'click', {
@@ -236,7 +236,7 @@ const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail
     basket: {
       id: cartId,
       quantity: length,
-      total: { value: total, currency }
+      total: { value: total, currency },
     },
     product: {
       productId: detail['sku'],
@@ -248,13 +248,13 @@ const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail
       stock: 1,
       images: [detail['image']],
       category: [detail['category']],
-      categories: [detail['category']]
+      categories: [detail['category']],
     },
     quantity: 1,
     subtotalIncludingTax: { value: tax, currency },
     subtotal: {
-      value: subtotal, currency
-    }
+      value: subtotal, currency,
+    },
 
   };
   return basketItem;
@@ -293,8 +293,8 @@ export const emitBasket = (cartId: string, products: any, action: string, newpro
       subtotal: { value: cartSubTotal, currency }, // the basket value *before* the application of taxes, discounts, promotions, shipping costs
       subtotalIncludingTax: { value: cartTotal, currency },  //the basket subtotal, including tax, but before the application of discounts, promotions, shipping costs, 
       total: { value: cartTotal, currency },
-      quantity: cartQuantity
-    }
+      quantity: cartQuantity,
+    },
   };
   if (transactionId) {
     basketSummary['transaction'] = { id: transactionId };
@@ -335,7 +335,7 @@ const CoveoAnalytics = {
   setCookie,
   setCart,
   getCart,
-  emitUser
+  emitUser,
 };
 
 export default CoveoAnalytics;

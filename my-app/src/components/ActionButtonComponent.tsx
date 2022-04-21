@@ -21,7 +21,7 @@ export enum buttonActionEnum {
   viewEvent = "ViewEvent",
   emitBasketEvent = "BasketEvent",
   purchaseEvent = "PurchaseEvent",
-  clearBasket = "ClearBasketEvent"
+  clearBasket = "ClearBasketEvent",
 };
 
 export class AddButton extends Component<ButtonProps> {
@@ -52,7 +52,7 @@ export class AddButton extends Component<ButtonProps> {
         term: this.props.results.summary.query,
       },
       resultCount: this.props.results.summary.total,
-      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search'
+      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search',
     });
 
     CoveoUA.emitUV("ecSearchItemsShown", {
@@ -60,7 +60,7 @@ export class AddButton extends Component<ButtonProps> {
         id: this.props.searchQueryId.current,
         term: this.props.results.summary.query,
       },
-      productIds: searchResultItems.map(({ id }) => id)
+      productIds: searchResultItems.map(({ id }) => id),
     });
   }
 
@@ -81,7 +81,7 @@ export class AddButton extends Component<ButtonProps> {
       id: cartId,
       revenue,
       shipping: 0,
-      tax
+      tax,
     });
     //Using Transaction
     //CoveoUA.emitBasket(searchUid, cartItems, "remove", product);

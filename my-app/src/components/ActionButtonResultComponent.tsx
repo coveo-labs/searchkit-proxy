@@ -34,7 +34,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
 
     this.state = {
       result: this.props.result,
-      count: cartItems.length
+      count: cartItems.length,
     };
   }
 
@@ -106,7 +106,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
         },
         price: {
           value: product["price"],
-          currency: "USD"
+          currency: "USD",
         },
         name: product["name"],
         category: product["category"],
@@ -114,9 +114,9 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
         url: url,
         images: [product["image"]],
         description: product["plot"],
-        stock
+        stock,
       },
-      eventType: "detail"
+      eventType: "detail",
     });
 
     //CoveoUA.emitBasket();
@@ -127,10 +127,10 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     CoveoUA.emitUV("ecSearchItemClick", {
       query: {
         id: this.props.searchQueryId.current,
-        term: this.props.summary.query
+        term: this.props.summary.query,
       },
       productId: product["sku"],
-      position: this.props.position
+      position: this.props.position,
     });
   }
 
