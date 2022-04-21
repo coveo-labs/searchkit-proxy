@@ -190,7 +190,7 @@ const HitsList = ({ data }) => (
             <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
               <AddResultButton
                 caption="Add Search Click"
-                action={buttonResultActionEnum.addClick}
+                action={buttonResultActionEnum.addSearchItemClick}
                 result={hit}
                 main={false}
                 position={index}

@@ -23,7 +23,7 @@ export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
   addDetails = "AddDetails",
-  addClick = "AddClick",
+  addSearchItemClick = "AddSearchItemClick",
 }
 
 export class AddResultButton extends Component<ButtonProps, ButtonState> {
@@ -120,7 +120,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     //CoveoUA.emitBasket();
   }
 
-  addClick() {
+  addSearchItemClick() {
     const product = this.createProductData();
     CoveoUA.emitUV("ecSearchItemClick", {
       query: {
@@ -143,8 +143,8 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     if (this.props.action === buttonResultActionEnum.removeFromCart) {
       this.removeFromCart();
     }
-    if (this.props.action === buttonResultActionEnum.addClick) {
-      this.addClick();
+    if (this.props.action === buttonResultActionEnum.addSearchItemClick) {
+      this.addSearchItemClick();
     }
   }
 
