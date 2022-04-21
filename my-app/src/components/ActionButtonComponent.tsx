@@ -13,7 +13,7 @@ interface ButtonProps {
   callback: any;
   hide: boolean;
   searchQueryId: any;
-}
+};
 
 export enum buttonActionEnum {
   searchEvent = "SearchEvent",
@@ -21,8 +21,8 @@ export enum buttonActionEnum {
   viewEvent = "ViewEvent",
   emitBasketEvent = "BasketEvent",
   purchaseEvent = "PurchaseEvent",
-  clearBasket = "ClearBasketEvent",
-}
+  clearBasket = "ClearBasketEvent"
+};
 
 export class AddButton extends Component<ButtonProps> {
   createProductData(result: any) {
@@ -41,8 +41,8 @@ export class AddButton extends Component<ButtonProps> {
   addSearchEvent() {
     const product = []; //this.createProductData();
     CoveoUA.sentSearchEvent(product);
-    const searchResultItems = this.props.results.hits.items
-    this.props.searchQueryId.current = CoveoUA.getQubitVisitor() + Date.now()
+    const searchResultItems = this.props.results.hits.items;
+    this.props.searchQueryId.current = CoveoUA.getQubitVisitor() + Date.now();
     
     CoveoUA.emitUV("ecSearch", {
       type: "organic",
@@ -52,7 +52,7 @@ export class AddButton extends Component<ButtonProps> {
         term: this.props.results.summary.query,
       },
       resultCount: this.props.results.summary.total,
-      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search',
+      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search'
     });
 
     CoveoUA.emitUV("ecSearchItemsShown", {
@@ -60,7 +60,7 @@ export class AddButton extends Component<ButtonProps> {
         id: this.props.searchQueryId.current,
         term: this.props.results.summary.query,
       },
-      productIds: searchResultItems.map(({ id }) => id),
+      productIds: searchResultItems.map(({ id }) => id)
     });
   }
 
@@ -81,7 +81,7 @@ export class AddButton extends Component<ButtonProps> {
       id: cartId,
       revenue,
       shipping: 0,
-      tax,
+      tax
     });
     //Using Transaction
     //CoveoUA.emitBasket(searchUid, cartItems, "remove", product);
@@ -104,6 +104,7 @@ export class AddButton extends Component<ButtonProps> {
       coveoua("send", "event", CoveoUA.getOriginsAndCustomData());
     }
   }
+  
   emitBasket() {
     let products = [];
     const searchUid =
@@ -172,5 +173,5 @@ export class AddButton extends Component<ButtonProps> {
       </EuiButton>
     );
   }
-}
+};
 export default AddButton;

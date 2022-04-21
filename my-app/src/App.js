@@ -242,14 +242,14 @@ const BindKeyupHandler = (props) => {
         hiddenSearchCta?.click();
       }
     })
-  }, [])
+  }, []);
 
   return (
     <div ref={attachHandler} >
       {props.children}
     </div>
-  )
-}
+  );
+};
 
 function App() {
   const Facets = FacetsList([]);
@@ -274,20 +274,8 @@ function App() {
     config["host"] = host;
   }
 
-  function ecSent() {
-    getResponse(sseCallbackUrl, "POST");
-  }
-
   function setSSECallbackUrl(url) {
     sseCallbackUrl = url;
-  }
-
-
-  async function getResponse(url, method) {
-    const request = new Request(url);
-
-    const response = await fetch(request, { method: method });
-    return response;
   }
 
   return (

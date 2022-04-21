@@ -13,19 +13,19 @@ interface ButtonProps {
   enabled: boolean;
   updateCart: boolean;
   searchQueryId: any;
-}
+};
 
 interface ButtonState {
   result: any;
   count: number;
-}
+};
 
 export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
   addDetails = "AddDetails",
-  addSearchItemClick = "AddSearchItemClick",
-}
+  addSearchItemClick = "AddSearchItemClick"
+};
 
 export class AddResultButton extends Component<ButtonProps, ButtonState> {
   constructor(props) {
@@ -34,7 +34,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
 
     this.state = {
       result: this.props.result,
-      count: cartItems.length,
+      count: cartItems.length
     };
   }
 
@@ -55,6 +55,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     product["id"] = product["sku"];
     return product;
   }
+
   addToCart() {
     const searchUid = this.props.result.fields["searchQueryUid"];
     let cart = CoveoUA.getCart();
@@ -101,11 +102,11 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
         sku,
         originalPrice: {
           value: product["price"],
-          currency: "USD",
+          currency: "USD"
         },
         price: {
           value: product["price"],
-          currency: "USD",
+          currency: "USD"
         },
         name: product["name"],
         category: product["category"],
@@ -113,9 +114,9 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
         url: url,
         images: [product["image"]],
         description: product["plot"],
-        stock,
+        stock
       },
-      eventType: "detail",
+      eventType: "detail"
     });
 
     //CoveoUA.emitBasket();
@@ -126,10 +127,10 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     CoveoUA.emitUV("ecSearchItemClick", {
       query: {
         id: this.props.searchQueryId.current,
-        term: this.props.summary.query,
+        term: this.props.summary.query
       },
       productId: product["sku"],
-      position: this.props.position,
+      position: this.props.position
     });
   }
 

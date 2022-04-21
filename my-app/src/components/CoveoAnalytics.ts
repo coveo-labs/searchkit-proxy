@@ -5,7 +5,7 @@ import { getApiKey } from "./settings";
 declare global {
   /* eslint-disable no-unused-vars */
   function coveoua<T>(action?: string, fieldName?: any, fieldValue?: any);
-}
+};
 
 interface AnalyticsProductData {
   name: string;
@@ -16,8 +16,7 @@ interface AnalyticsProductData {
   price: number;
   category: string;
   variant: string;
-}
-
+};
 
 export const getAnalyticsProductData = (product, sku = '', quantity = 0, withQuantity = true) => {
 
@@ -35,7 +34,7 @@ export const getAnalyticsProductData = (product, sku = '', quantity = 0, withQua
     group: product.ec_item_group_id,
     price: product.ec_promo_price,
     category: category,
-    variant: sku,
+    variant: sku
   };
 
 
@@ -60,7 +59,7 @@ const getOriginsAndCustomData = (dataToMerge?: any) => {
   return {
     custom,
     searchHub: sessionStorage.getItem('pageType'),
-    tab: originLevel2,
+    tab: originLevel2
   };
 };
 
@@ -69,7 +68,8 @@ const initCoveo = () => {
     coveoua('init', `${getApiKey()}`, `${getEndpoint("analytics")}`);
     window['coveoinit'] = true;
   }
-}
+};
+
 const addProductForPurchase = (products: AnalyticsProductData[] | AnalyticsProductData) => {
   initCoveo();
   products = Array.isArray(products) ? products : [products];
@@ -210,14 +210,14 @@ export const getVisitorId = () => {
 export const getCookie = function (name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
   if (match) return match[2];
-}
+};
 
 export const setCookie = function (cname, cvalue, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=./";
-}
+};
 
 export const emitUV = (type, payload) => {
   window['uv'].emit(type, payload);
@@ -248,7 +248,7 @@ const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail
       stock: 1,
       images: [detail['image']],
       category: [detail['category']],
-      categories: [detail['category']],
+      categories: [detail['category']]
     },
     quantity: 1,
     subtotalIncludingTax: { value: tax, currency },
@@ -286,7 +286,7 @@ export const emitBasket = (cartId: string, products: any, action: string, newpro
       emitUV(transactionId ? 'ecBasketItemTransaction' : 'ecBasketItem', basketItem);
 
     });
-  }
+  };
 
   const basketSummary = {
     basket: {
@@ -335,7 +335,7 @@ const CoveoAnalytics = {
   setCookie,
   setCart,
   getCart,
-  emitUser,
+  emitUser
 };
 
 export default CoveoAnalytics;

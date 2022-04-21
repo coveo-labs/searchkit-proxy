@@ -15,12 +15,12 @@ interface EnableProxyProps {
   disableCaption: string;
   setHost: any;
   setCallbackUrl: any;
-}
+};
 
 interface EnableProxyState {
   enabled: boolean;
   executed: boolean;
-}
+};
 
 export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
   private caption: string;
