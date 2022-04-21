@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -146,7 +146,7 @@ function changeResult(ref, result) {
   ref.result = result;
 }
 
-const HitsList = ({ data }) => (
+const HitsList = ({ data, searchQueryId }) => (
   <EuiFlexGrid>
     {data?.hits.items.map((hit, index) => (
       <EuiFlexItem key={hit.id}>
@@ -194,6 +194,7 @@ const HitsList = ({ data }) => (
                 position={index}
                 summary={data.summary}
                 updateCart={false}
+                searchQueryId={searchQueryId}
               ></AddResultButton>
               <AddResultButton
                 caption="Add To Cart"
@@ -256,6 +257,7 @@ function App() {
 
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
+  const qubitSearchIdRef = useRef();
 
   // Emit View on page load
   useEffect(() => {
@@ -265,7 +267,7 @@ function App() {
       currency = "USD";
     CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
     CoveoUA.emitUser();
-  }, [])
+  }, []);
 
 
   function changeHost(host) {
@@ -312,6 +314,7 @@ function App() {
               results={results}
               hide={true}
               coveoEnabled={!/elastic/.test(config.host)}
+              searchQueryId={qubitSearchIdRef}
             ></AddButton>
             <AddButton
               caption="Add Impressions/Shown Event"
@@ -345,7 +348,7 @@ function App() {
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            <HitsList data={results} />
+            <HitsList data={results} searchQueryId={qubitSearchIdRef} />
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={results} />
             </EuiFlexGroup>

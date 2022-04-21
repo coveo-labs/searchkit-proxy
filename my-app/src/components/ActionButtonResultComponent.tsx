@@ -12,6 +12,7 @@ interface ButtonProps {
   position: number;
   enabled: boolean;
   updateCart: boolean;
+  searchQueryId: any;
 }
 
 interface ButtonState {
@@ -124,7 +125,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     const product = this.createProductData();
     CoveoUA.emitUV("ecSearchItemClick", {
       query: {
-        id: CoveoUA.getQubitVisitor(),
+        id: this.props.searchQueryId.current,
         term: this.props.summary.query,
       },
       productId: product["sku"],

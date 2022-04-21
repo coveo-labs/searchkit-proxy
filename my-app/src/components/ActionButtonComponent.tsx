@@ -12,6 +12,7 @@ interface ButtonProps {
   coveoEnabled: boolean;
   callback: any;
   hide: boolean;
+  searchQueryId: any;
 }
 
 export enum buttonActionEnum {
@@ -41,12 +42,13 @@ export class AddButton extends Component<ButtonProps> {
     const product = []; //this.createProductData();
     CoveoUA.sentSearchEvent(product);
     const searchResultItems = this.props.results.hits.items
+    this.props.searchQueryId.current = CoveoUA.getQubitVisitor() + Date.now()
     
     CoveoUA.emitUV("ecSearch", {
       type: "organic",
       outcome: "success",
       query: {
-        id: CoveoUA.getQubitVisitor(),
+        id: this.props.searchQueryId.current,
         term: this.props.results.summary.query,
       },
       resultCount: this.props.results.summary.total,
@@ -55,7 +57,7 @@ export class AddButton extends Component<ButtonProps> {
 
     CoveoUA.emitUV("ecSearchItemsShown", {
       query: {
-        id: CoveoUA.getQubitVisitor(),
+        id: this.props.searchQueryId.current,
         term: this.props.results.summary.query,
       },
       productIds: searchResultItems.map(({ id }) => id),
