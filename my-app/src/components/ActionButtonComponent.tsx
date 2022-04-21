@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { EuiButton } from "@elastic/eui";
 
 import CoveoUA from "./CoveoAnalytics";
-import { serialize } from "v8";
+// import { serialize } from "v8";
 
 interface ButtonProps {
   caption: string;
