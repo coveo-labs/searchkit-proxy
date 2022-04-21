@@ -11,6 +11,7 @@ package-lock.json
 *.key
 .config.json
 *config.json
+!tsconfig.json
 *.log
 
 build/

@@ -5,7 +5,7 @@ import { getApiKey } from "./settings";
 declare global {
   /* eslint-disable no-unused-vars */
   function coveoua<T>(action?: string, fieldName?: any, fieldValue?: any);
-}
+};
 
 interface AnalyticsProductData {
   name: string;
@@ -16,8 +16,7 @@ interface AnalyticsProductData {
   price: number;
   category: string;
   variant: string;
-}
-
+};
 
 export const getAnalyticsProductData = (product, sku = '', quantity = 0, withQuantity = true) => {
 
@@ -69,7 +68,8 @@ const initCoveo = () => {
     coveoua('init', `${getApiKey()}`, `${getEndpoint("analytics")}`);
     window['coveoinit'] = true;
   }
-}
+};
+
 const addProductForPurchase = (products: AnalyticsProductData[] | AnalyticsProductData) => {
   initCoveo();
   products = Array.isArray(products) ? products : [products];
@@ -140,15 +140,6 @@ const getQubitVisitor = () => {
   return __qubitVisitorId;
 }
 
-const isEcViewSent = () => {
-  const isSent = sessionStorage.getItem("ecViewSent");
-  return isSent !== null ? true : false;
-}
-
-const setEcViewSent = () => {
-  sessionStorage.setItem("ecViewSent", "true");
-}
-
 
 const getCart = () => {
   const cart = sessionStorage.getItem("Cart");
@@ -164,7 +155,7 @@ const productClick = (product, searchUid: string, recommendationStrategy: string
   initCoveo();
   const productData = {
     ...getAnalyticsProductData(product),
-    position: product.index + 1
+    position: product.index + 1,
   };
   coveoua('ec:addProduct', productData);
   coveoua('ec:setAction', 'click', {
@@ -202,7 +193,10 @@ export const getVisitorId = () => {
 
   let visitorId = window['coveo_visitorId'];
   if (!visitorId) {
-    visitorId = window['coveoanalytics']?.getCurrentClient()?.visitorId;
+    visitorId = (
+      window['coveoanalytics']?.getCurrentClient()?.visitorId
+      || getCookie('_qubitTracker')
+    );
   }
 
   if (visitorId) {
@@ -216,14 +210,14 @@ export const getVisitorId = () => {
 export const getCookie = function (name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
   if (match) return match[2];
-}
+};
 
 export const setCookie = function (cname, cvalue, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=./";
-}
+};
 
 export const emitUV = (type, payload) => {
   window['uv'].emit(type, payload);
@@ -242,7 +236,7 @@ const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail
     basket: {
       id: cartId,
       quantity: length,
-      total: { value: total, currency }
+      total: { value: total, currency },
     },
     product: {
       productId: detail['sku'],
@@ -259,8 +253,8 @@ const createBasketItem = (cartId, length, total, subtotal, tax, currency, detail
     quantity: 1,
     subtotalIncludingTax: { value: tax, currency },
     subtotal: {
-      value: subtotal, currency
-    }
+      value: subtotal, currency,
+    },
 
   };
   return basketItem;
@@ -292,15 +286,15 @@ export const emitBasket = (cartId: string, products: any, action: string, newpro
       emitUV(transactionId ? 'ecBasketItemTransaction' : 'ecBasketItem', basketItem);
 
     });
-  }
+  };
 
   const basketSummary = {
     basket: {
       subtotal: { value: cartSubTotal, currency }, // the basket value *before* the application of taxes, discounts, promotions, shipping costs
       subtotalIncludingTax: { value: cartTotal, currency },  //the basket subtotal, including tax, but before the application of discounts, promotions, shipping costs, 
       total: { value: cartTotal, currency },
-      quantity: cartQuantity
-    }
+      quantity: cartQuantity,
+    },
   };
   if (transactionId) {
     basketSummary['transaction'] = { id: transactionId };
@@ -325,8 +319,6 @@ export const emitBasket = (cartId: string, products: any, action: string, newpro
 const CoveoAnalytics = {
   addProductForPurchase,
   addToCart,
-  isEcViewSent,
-  setEcViewSent,
   detailView,
   getAnalyticsProductData,
   getOriginsAndCustomData,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -142,13 +142,11 @@ let config = {
   ],
 };
 
-
 function changeResult(ref, result) {
   ref.result = result;
 }
 
-
-const HitsList = ({ data, ecView }) => (
+const HitsList = ({ data, searchQueryId }) => (
   <EuiFlexGrid>
     {data?.hits.items.map((hit, index) => (
       <EuiFlexItem key={hit.id}>
@@ -190,13 +188,13 @@ const HitsList = ({ data, ecView }) => (
             <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
               <AddResultButton
                 caption="Add Search Click"
-                action={buttonResultActionEnum.addClick}
+                action={buttonResultActionEnum.addSearchItemClick}
                 result={hit}
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={false}
+                searchQueryId={searchQueryId}
               ></AddResultButton>
               <AddResultButton
                 caption="Add To Cart"
@@ -205,7 +203,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={true}
               ></AddResultButton>
               <AddResultButton
@@ -215,7 +212,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={true}
               ></AddResultButton>
               <AddResultButton
@@ -225,7 +221,6 @@ const HitsList = ({ data, ecView }) => (
                 main={false}
                 position={index}
                 summary={data.summary}
-                enabled={ecView}
                 updateCart={false}
               ></AddResultButton>
             </EuiFlexGroup>
@@ -238,45 +233,57 @@ const HitsList = ({ data, ecView }) => (
   </EuiFlexGrid >
 );
 
+const BindKeyupHandler = (props) => {
+  const attachHandler = useCallback(node => {
+    if (!node) return;
+    node.addEventListener('keyup', evt => {
+      if (/enter/i.test(evt.key || evt.code)) {
+        const hiddenSearchCta = document.querySelector('.euiPageHeaderSection button[style*="display: none"]');
+        hiddenSearchCta?.click();
+      }
+    });
+  }, []);
+
+  return (
+    <div ref={attachHandler} >
+      {props.children}
+    </div>
+  );
+};
+
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
 
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
-  const [ecViewSent, setEcViewSent] = useState(0);
-  const [ecViewSentDone, setEcViewSentDone] = useState(1);
+  const qubitSearchIdRef = useRef();
+
+  // Emit View on page load
+  useEffect(() => {
+    CoveoUA.logPageView();
+    const language = "en-us",
+      country = "US",
+      currency = "USD";
+    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
+    CoveoUA.emitUser();
+  }, []);
+
 
   function changeHost(host) {
     config["host"] = host;
-  }
-
-  function ecSent() {
-    setEcViewSent(true);
-    setEcViewSentDone(false);
-    //Also sent the sseCallbackUrl
-    getResponse(sseCallbackUrl, "POST");
   }
 
   function setSSECallbackUrl(url) {
     sseCallbackUrl = url;
   }
 
-
-  async function getResponse(url, method) {
-    const request = new Request(url);
-
-    const response = await fetch(request, { method: method });
-    return response;
-  }
-
-
-
-
   return (
     <EuiPage>
       <EuiPageSideBar>
-        <SearchBar loading={loading} />
+        <BindKeyupHandler>
+          <SearchBar loading={loading} />
+        </BindKeyupHandler>
         <EuiHorizontalRule margin="m" />
         <Facets data={results} loading={loading} />
       </EuiPageSideBar>
@@ -289,39 +296,30 @@ function App() {
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <AddButton
-              caption="Add View Event (mandatory)"
-              action={buttonActionEnum.viewEvent}
-              main={true}
-              enabled={ecViewSentDone}
-              results={results}
-              callback={(e) => ecSent()}
-            ></AddButton>
-            <AddButton
               caption="Add Search Event"
               action={buttonActionEnum.searchEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
+              hide={true}
+              coveoEnabled={!/elastic/.test(config.host)}
+              searchQueryId={qubitSearchIdRef}
             ></AddButton>
             <AddButton
               caption="Add Impressions/Shown Event"
               action={buttonActionEnum.impressionsEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
             <AddButton
               caption="Sent Basket"
               action={buttonActionEnum.emitBasketEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
             <AddButton
               caption="Purchase"
               action={buttonActionEnum.purchaseEvent}
               main={false}
-              enabled={ecViewSent}
               results={results}
             ></AddButton>
 
@@ -338,7 +336,7 @@ function App() {
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            <HitsList data={results} ecView={ecViewSent} />
+            <HitsList data={results} searchQueryId={qubitSearchIdRef} />
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={results} />
             </EuiFlexGroup>

@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import { EuiButton } from "@elastic/eui";
 
 import CoveoUA from "./CoveoAnalytics";
-import { serialize } from "v8";
+// import { serialize } from "v8";
 
 interface ButtonProps {
   caption: string;
   results: any;
   action: buttonActionEnum;
   main: boolean;
-  enabled: boolean;
+  coveoEnabled: boolean;
   callback: any;
-}
+  hide: boolean;
+  searchQueryId: any;
+};
 
 export enum buttonActionEnum {
   searchEvent = "SearchEvent",
@@ -20,7 +22,7 @@ export enum buttonActionEnum {
   emitBasketEvent = "BasketEvent",
   purchaseEvent = "PurchaseEvent",
   clearBasket = "ClearBasketEvent",
-}
+};
 
 export class AddButton extends Component<ButtonProps> {
   createProductData(result: any) {
@@ -39,17 +41,26 @@ export class AddButton extends Component<ButtonProps> {
   addSearchEvent() {
     const product = []; //this.createProductData();
     CoveoUA.sentSearchEvent(product);
-    const searchUid =
-      this.props.results.hits.items[0].fields["searchQueryUid"] || "";
+    const searchResultItems = this.props.results.hits.items;
+    this.props.searchQueryId.current = CoveoUA.getQubitVisitor() + Date.now();
+    
     CoveoUA.emitUV("ecSearch", {
       type: "organic",
       outcome: "success",
       query: {
-        id: CoveoUA.getQubitVisitor(),
+        id: this.props.searchQueryId.current,
         term: this.props.results.summary.query,
       },
       resultCount: this.props.results.summary.total,
-      source: "proxy-search",
+      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search',
+    });
+
+    CoveoUA.emitUV("ecSearchItemsShown", {
+      query: {
+        id: this.props.searchQueryId.current,
+        term: this.props.results.summary.query,
+      },
+      productIds: searchResultItems.map(({ id }) => id),
     });
   }
 
@@ -79,13 +90,11 @@ export class AddButton extends Component<ButtonProps> {
   }
 
   addImpressionsEvent() {
-    let products = [];
     const searchUid =
       this.props.results.hits.items[0].fields["searchQueryUid"] || "";
     if (searchUid !== "") {
       this.props.results.hits.items.forEach((product, index) => {
         const product_parsed = this.createProductData(product.fields);
-        products.push(product_parsed["sku"]);
         CoveoUA.impressions(
           { ...product_parsed, position: index + 1 },
           searchUid
@@ -94,30 +103,8 @@ export class AddButton extends Component<ButtonProps> {
       coveoua("ec:setAction", "impression");
       coveoua("send", "event", CoveoUA.getOriginsAndCustomData());
     }
-    this.addShown(products);
   }
-
-  addShown(products: any) {
-    CoveoUA.emitUV("ecSearchItemsShown", {
-      type: "organic",
-      outcome: "success",
-      query: {
-        id: CoveoUA.getQubitVisitor(),
-        term: this.props.results.summary.query,
-      },
-      productIds: products,
-    });
-  }
-
-  addView() {
-    CoveoUA.logPageView();
-    const language = "en-us",
-      country = "US",
-      currency = "USD";
-    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
-    CoveoUA.emitUser();
-  }
-
+  
   emitBasket() {
     let products = [];
     const searchUid =
@@ -149,7 +136,6 @@ export class AddButton extends Component<ButtonProps> {
 
   addAction() {
     if (this.props.main) {
-      CoveoUA.setEcViewSent();
       if (this.props.callback) {
         this.props.callback();
       }
@@ -167,34 +153,25 @@ export class AddButton extends Component<ButtonProps> {
     if (this.props.action === buttonActionEnum.searchEvent) {
       this.addSearchEvent();
     }
-    //check action type
-    if (this.props.action === buttonActionEnum.viewEvent) {
-      this.addView();
-    }
     if (this.props.action === buttonActionEnum.impressionsEvent) {
       this.addImpressionsEvent();
     }
   }
 
   render() {
-    let enabled = this.props.enabled;
     let caption = this.props.caption;
     if (this.props.action === buttonActionEnum.purchaseEvent) {
       //const cartItems = CoveoUA.getCart();
       //caption += " (" + cartItems.length + ")";
     }
-    if (this.props.main) {
-      enabled = true;
-    }
     return (
       <EuiButton
-        style={{ marginRight: "10px" }}
-        isDisabled={!enabled}
+        style={{ marginRight: "10px", display: this.props.hide ? 'none' : 'initial' }}
         onClick={() => this.addAction()}
       >
         {caption}
       </EuiButton>
     );
   }
-}
+};
 export default AddButton;

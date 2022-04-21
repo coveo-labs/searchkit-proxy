@@ -12,20 +12,20 @@ interface ButtonProps {
   position: number;
   enabled: boolean;
   updateCart: boolean;
-}
+  searchQueryId: any;
+};
 
 interface ButtonState {
   result: any;
   count: number;
-}
+};
 
 export enum buttonResultActionEnum {
   addToCart = "AddToCart",
   removeFromCart = "RemoveFromCart",
-  addView = "AddView",
   addDetails = "AddDetails",
-  addClick = "AddClick",
-}
+  addSearchItemClick = "AddSearchItemClick"
+};
 
 export class AddResultButton extends Component<ButtonProps, ButtonState> {
   constructor(props) {
@@ -55,6 +55,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     product["id"] = product["sku"];
     return product;
   }
+
   addToCart() {
     const searchUid = this.props.result.fields["searchQueryUid"];
     let cart = CoveoUA.getCart();
@@ -88,15 +89,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     //Also UV action
   }
 
-  addView() {
-    CoveoUA.logPageView();
-    const language = "en-us",
-      country = "US",
-      currency = "USD";
-    CoveoUA.emitUV("ecView", { type: "home", language, country, currency });
-    CoveoUA.emitUser();
-  }
-
   addDetails() {
     //Detailed page
     const product = this.createProductData();
@@ -110,7 +102,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
         sku,
         originalPrice: {
           value: product["price"],
-          currency: "USD",
+          currency: "USD"
         },
         price: {
           value: product["price"],
@@ -130,11 +122,11 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     //CoveoUA.emitBasket();
   }
 
-  addClick() {
+  addSearchItemClick() {
     const product = this.createProductData();
     CoveoUA.emitUV("ecSearchItemClick", {
       query: {
-        id: CoveoUA.getQubitVisitor(),
+        id: this.props.searchQueryId.current,
         term: this.props.summary.query,
       },
       productId: product["sku"],
@@ -150,14 +142,11 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     if (this.props.action === buttonResultActionEnum.addToCart) {
       this.addToCart();
     }
-    if (this.props.action === buttonResultActionEnum.addView) {
-      this.addView();
-    }
     if (this.props.action === buttonResultActionEnum.removeFromCart) {
       this.removeFromCart();
     }
-    if (this.props.action === buttonResultActionEnum.addClick) {
-      this.addClick();
+    if (this.props.action === buttonResultActionEnum.addSearchItemClick) {
+      this.addSearchItemClick();
     }
   }
 
@@ -178,7 +167,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     return (
       <EuiButton
         style={{ marginRight: "10px" }}
-        isDisabled={!this.props.enabled}
         onClick={() => this.addAction()}
       >
         {caption}
