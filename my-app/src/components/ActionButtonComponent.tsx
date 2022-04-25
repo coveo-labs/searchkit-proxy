@@ -16,7 +16,6 @@ interface ButtonProps {
 };
 
 export enum buttonActionEnum {
-  searchEvent = "SearchEvent",
   impressionsEvent = "ImpressionsEvent",
   viewEvent = "ViewEvent",
   emitBasketEvent = "BasketEvent",
@@ -37,31 +36,6 @@ export class AddButton extends Component<ButtonProps> {
     product["plot"] = result["plot"] || "";
     product["id"] = product["sku"];
     return product;
-  }
-  addSearchEvent() {
-    const product = []; //this.createProductData();
-    CoveoUA.sentSearchEvent(product);
-    const searchResultItems = this.props.results.hits.items;
-    this.props.searchQueryId.current = CoveoUA.getQubitVisitor() + Date.now();
-    
-    CoveoUA.emitUV("ecSearch", {
-      type: "organic",
-      outcome: "success",
-      query: {
-        id: this.props.searchQueryId.current,
-        term: this.props.results.summary.query,
-      },
-      resultCount: this.props.results.summary.total,
-      source: this.props.coveoEnabled ? 'coveo-search' : 'elastic-search',
-    });
-
-    CoveoUA.emitUV("ecSearchItemsShown", {
-      query: {
-        id: this.props.searchQueryId.current,
-        term: this.props.results.summary.query,
-      },
-      productIds: searchResultItems.map(({ id }) => id),
-    });
   }
 
   addPurchase() {
@@ -148,10 +122,6 @@ export class AddButton extends Component<ButtonProps> {
     }
     if (this.props.action === buttonActionEnum.purchaseEvent) {
       this.addPurchase();
-    }
-    //check action type
-    if (this.props.action === buttonActionEnum.searchEvent) {
-      this.addSearchEvent();
     }
     if (this.props.action === buttonActionEnum.impressionsEvent) {
       this.addImpressionsEvent();

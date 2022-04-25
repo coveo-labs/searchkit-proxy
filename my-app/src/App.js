@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -233,24 +233,6 @@ const HitsList = ({ data, searchQueryId }) => (
   </EuiFlexGrid >
 );
 
-const BindKeyupHandler = (props) => {
-  const attachHandler = useCallback(node => {
-    if (!node) return;
-    node.addEventListener('keyup', evt => {
-      if (/enter/i.test(evt.key || evt.code)) {
-        const hiddenSearchCta = document.querySelector('.euiPageHeaderSection button[style*="display: none"]');
-        hiddenSearchCta?.click();
-      }
-    });
-  }, []);
-
-  return (
-    <div ref={attachHandler} >
-      {props.children}
-    </div>
-  );
-};
-
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
@@ -270,6 +252,39 @@ function App() {
   }, []);
 
 
+  // Emit Search on query submission
+  useEffect(() => {
+    if (!results?.summary?.query) return;
+    
+    const searchResultItems = results.hits?.items
+    const hasResults = searchResultItems.length
+
+    // Store queryId in ref to persist across search item clicks
+    qubitSearchIdRef.current = CoveoUA.getQubitVisitor() + Date.now();
+
+    CoveoUA.emitUV("ecSearch", {
+      type: "organic",
+      outcome: hasResults ? "success" : "fail",
+      query: {
+        id: qubitSearchIdRef.current,
+        term: results.summary.query,
+      },
+      resultCount: results.summary.total,
+      source: !/elastic/.test(config.host) ? 'coveo-search' : 'elastic-search',
+    });
+
+    if (!hasResults) return;
+
+    CoveoUA.emitUV("ecSearchItemsShown", {
+      query: {
+        id: qubitSearchIdRef.current,
+        term: results.summary.query,
+      },
+      productIds: searchResultItems.map(({ id }) => id),
+    });
+  }, [results])
+
+
   function changeHost(host) {
     config["host"] = host;
   }
@@ -281,9 +296,7 @@ function App() {
   return (
     <EuiPage>
       <EuiPageSideBar>
-        <BindKeyupHandler>
-          <SearchBar loading={loading} />
-        </BindKeyupHandler>
+        <SearchBar loading={loading} />
         <EuiHorizontalRule margin="m" />
         <Facets data={results} loading={loading} />
       </EuiPageSideBar>
