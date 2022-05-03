@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { getQubitTrackerId, getQubitExperienceId, getHostElastic } from "./components/settings";
+import { getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
 import {
@@ -38,7 +38,7 @@ import {
   EuiFlexItem,
 } from "@elastic/eui";
 
-import { gql, useQuery } from "@apollo/client";
+// import { gql, useQuery } from "@apollo/client";
 
 import "@elastic/eui/dist/eui_theme_light.css";
 import "./App.css";
@@ -142,9 +142,9 @@ let config = {
   ],
 };
 
-function changeResult(ref, result) {
-  ref.result = result;
-}
+// function changeResult(ref, result) {
+//   ref.result = result;
+// }
 
 const HitsList = ({ data, searchQueryId }) => (
   <EuiFlexGrid>
@@ -290,7 +290,7 @@ function App() {
   }
 
   function setSSECallbackUrl(url) {
-    sseCallbackUrl = url;
+    sseCallbackUrl = url || sseCallbackUrl;
   }
 
   return (
