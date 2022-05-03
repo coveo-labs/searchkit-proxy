@@ -8,7 +8,7 @@ import {
   getHostCoveo,
   getHostElastic,
 } from "./settings";
-import { textChangeRangeIsUnchanged } from "typescript";
+// import { textChangeRangeIsUnchanged } from "typescript";
 
 interface EnableProxyProps {
   enableCaption: string;
@@ -45,12 +45,6 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     return results;
   }
 
-  sentCallback() {
-    if (this.callbackUrl !== "") {
-      this.props.setCallbackUrl(this.callbackUrl);
-    }
-  }
-
   async checkSearchEnablement() {
     this.enableCoveo = false;
     //Check with https://sse.qubit.com/ if we need to enable Elastic or Coveo
@@ -73,8 +67,8 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
       if (results["experiencePayloads"].length > 0) {
         results["experiencePayloads"].map((experience) => {
           //isControl: false means there will be no payload
-          this.callbackUrl = experience["callback"];
-          this.sentCallback();
+          const callbackUrl = experience["callback"];
+          fetch(callbackUrl, { method: 'POST' });
 
           if (experience["payload"]["enableCoveo"] === true) {
             this.enableCoveo = true;

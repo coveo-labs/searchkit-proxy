@@ -39,6 +39,7 @@ export class AddButton extends Component<ButtonProps> {
   }
 
   addPurchase() {
+    const transactionId = Date.now() + CoveoUA.getQubitVisitor().replace(/\D/g,'')
     const revenue = 0;
     const tax = 0;
     let products = [];
@@ -60,7 +61,7 @@ export class AddButton extends Component<ButtonProps> {
     //Using Transaction
     //CoveoUA.emitBasket(searchUid, cartItems, "remove", product);
 
-    CoveoUA.emitBasket(cartId, products, "", null, searchUid);
+    CoveoUA.emitBasket(cartId, products, "", null, transactionId);
   }
 
   addImpressionsEvent() {
