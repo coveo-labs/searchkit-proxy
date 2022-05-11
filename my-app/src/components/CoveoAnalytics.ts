@@ -3,7 +3,7 @@ import { getApiKey } from "./settings";
 
 /* globals coveoua */
 declare global {
-  /* eslint-disable no-unused-vars */
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   function coveoua<T>(action?: string, fieldName?: any, fieldValue?: any);
 };
 
@@ -136,8 +136,7 @@ const sentSearchEvent = (contents: any) => {
 };
 
 const getQubitVisitor = () => {
-  const __qubitVisitorId = localStorage.getItem("__qubitVisitorId");
-  return __qubitVisitorId;
+  return getCookie('_qubitTracker');
 }
 
 

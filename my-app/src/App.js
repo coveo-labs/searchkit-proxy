@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getHostElastic } from "./components/settings";
 import CoveoUA from "./components/CoveoAnalytics";
 
@@ -38,12 +38,8 @@ import {
   EuiFlexItem,
 } from "@elastic/eui";
 
-// import { gql, useQuery } from "@apollo/client";
-
 import "@elastic/eui/dist/eui_theme_light.css";
 import "./App.css";
-
-let sseCallbackUrl = '';
 
 let config = {
   host: getHostElastic(),
@@ -142,100 +138,10 @@ let config = {
   ],
 };
 
-// function changeResult(ref, result) {
-//   ref.result = result;
-// }
-
-const HitsList = ({ data, searchQueryId }) => (
-  <EuiFlexGrid>
-    {data?.hits.items.map((hit, index) => (
-      <EuiFlexItem key={hit.id}>
-        <EuiFlexGroup gutterSize="xl">
-          <EuiFlexItem>
-            <EuiFlexGroup>
-              <EuiFlexItem grow={false}>
-                <img
-                  src={hit.fields.poster}
-                  alt="Nature"
-                  style={{ height: "150px" }}
-                />
-              </EuiFlexItem>
-              <EuiFlexItem grow={4}>
-                <EuiTitle size="xs">
-                  <h6>{hit.fields.title}</h6>
-                </EuiTitle>
-                <EuiText grow={false}>
-                  <p>{hit.fields.plot}</p>
-                </EuiText>
-              </EuiFlexItem>
-              <EuiFlexItem grow={2}>
-                <EuiText grow={false}>
-                  <ul>
-                    <li>
-                      <b>ACTORS: </b>
-                      {hit.fields.actors?.join(", ")}
-                    </li>
-
-                    <li>
-                      <b>WRITERS: </b>
-                      {hit.fields.writers?.join(", ")}
-                    </li>
-                  </ul>
-                </EuiText>
-              </EuiFlexItem>
-
-            </EuiFlexGroup>
-            <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
-              <AddResultButton
-                caption="Add Search Click"
-                action={buttonResultActionEnum.addSearchItemClick}
-                result={hit}
-                main={false}
-                position={index}
-                summary={data.summary}
-                updateCart={false}
-                searchQueryId={searchQueryId}
-              ></AddResultButton>
-              <AddResultButton
-                caption="Add To Cart"
-                action={buttonResultActionEnum.addToCart}
-                result={hit}
-                main={false}
-                position={index}
-                summary={data.summary}
-                updateCart={true}
-              ></AddResultButton>
-              <AddResultButton
-                caption="Remove From Cart"
-                action={buttonResultActionEnum.removeFromCart}
-                result={hit}
-                main={false}
-                position={index}
-                summary={data.summary}
-                updateCart={true}
-              ></AddResultButton>
-              <AddResultButton
-                caption="Add Details (Product)"
-                action={buttonResultActionEnum.addDetails}
-                result={hit}
-                main={false}
-                position={index}
-                summary={data.summary}
-                updateCart={false}
-              ></AddResultButton>
-            </EuiFlexGroup>
-          </EuiFlexItem>
-
-        </EuiFlexGroup>
-
-      </EuiFlexItem >
-    ))}
-  </EuiFlexGrid >
-);
-
 function App() {
   const Facets = FacetsList([]);
   let variables = useSearchkitVariables();
+  const [cartCount, setCartCount] = useState(CoveoUA.getCart().length);
 
   //@ts-ignore
   const { results, loading } = useSearchkitSDK(config, variables);
@@ -289,10 +195,6 @@ function App() {
     config["host"] = host;
   }
 
-  function setSSECallbackUrl(url) {
-    sseCallbackUrl = url || sseCallbackUrl;
-  }
-
   return (
     <EuiPage>
       <EuiPageSideBar>
@@ -309,34 +211,25 @@ function App() {
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <AddButton
-              caption="Add Search Event"
-              action={buttonActionEnum.searchEvent}
-              main={false}
-              results={results}
-              hide={true}
-              coveoEnabled={!/elastic/.test(config.host)}
-              searchQueryId={qubitSearchIdRef}
-            ></AddButton>
-            <AddButton
               caption="Add Impressions/Shown Event"
               action={buttonActionEnum.impressionsEvent}
-              main={false}
+              hide={true}
               results={results}
             ></AddButton>
             <AddButton
-              caption="Sent Basket"
-              action={buttonActionEnum.emitBasketEvent}
-              main={false}
+              caption={`Clear Cart (${cartCount})`}
+              action={buttonActionEnum.clearCart}
               results={results}
+              setCartCount={setCartCount}
             ></AddButton>
             <AddButton
-              caption="Purchase"
+              caption={`Purchase Items (${cartCount})`}
               action={buttonActionEnum.purchaseEvent}
-              main={false}
               results={results}
+              setCartCount={setCartCount}
             ></AddButton>
 
-            <EnableProxy enableCaption="Using Coveo" disableCaption="Using Elastic" setCallbackUrl={(e) => setSSECallbackUrl(e)} setHost={(e) => changeHost(e)} ></EnableProxy>
+            <EnableProxy enableCaption="Using Coveo" disableCaption="Using Elastic" setHost={(e) => changeHost(e)} ></EnableProxy>
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>
@@ -349,7 +242,7 @@ function App() {
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            <HitsList data={results} searchQueryId={qubitSearchIdRef} />
+            <ResultList data={results} searchQueryId={qubitSearchIdRef} setCartCount={setCartCount} />
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={results} />
             </EuiFlexGroup>
@@ -358,6 +251,92 @@ function App() {
       </EuiPageBody>
     </EuiPage>
   );
-}
+};
+
+function ResultList ({ data, searchQueryId, setCartCount }) {
+  return (
+    <EuiFlexGrid>
+      {data?.hits.items.map((hit, index) => (
+        <EuiFlexItem key={hit.id}>
+          <EuiFlexGroup gutterSize="xl">
+            <EuiFlexItem>
+              <EuiFlexGroup>
+                <EuiFlexItem grow={false}>
+                  <img
+                    src={hit.fields.poster}
+                    alt="Nature"
+                    style={{ height: "150px" }}
+                  />
+                </EuiFlexItem>
+                <EuiFlexItem grow={4}>
+                  <EuiTitle size="xs">
+                    <h6>{hit.fields.title}</h6>
+                  </EuiTitle>
+                  <EuiText grow={false}>
+                    <p>{hit.fields.plot}</p>
+                  </EuiText>
+                </EuiFlexItem>
+                <EuiFlexItem grow={2}>
+                  <EuiText grow={false}>
+                    <ul>
+                      <li>
+                        <b>ACTORS: </b>
+                        {hit.fields.actors?.join(", ")}
+                      </li>
+
+                      <li>
+                        <b>WRITERS: </b>
+                        {hit.fields.writers?.join(", ")}
+                      </li>
+                    </ul>
+                  </EuiText>
+                </EuiFlexItem>
+              </EuiFlexGroup>
+              <EuiFlexGroup style={{ paddingLeft: '150px', paddingBottom: '30px', paddingRight: '10px' }}>
+                <AddResultButton
+                  caption="Add Search Click"
+                  action={buttonResultActionEnum.addSearchItemClick}
+                  result={hit}
+                  main={false}
+                  position={index}
+                  summary={data.summary}
+                  updateCart={false}
+                  searchQueryId={searchQueryId}
+                ></AddResultButton>
+                <AddResultButton
+                  caption="Add To Cart"
+                  action={buttonResultActionEnum.addToCart}
+                  result={hit}
+                  main={false}
+                  position={index}
+                  summary={data.summary}
+                  setCartCount={setCartCount}
+                ></AddResultButton>
+                <AddResultButton
+                  caption="Remove From Cart"
+                  action={buttonResultActionEnum.removeFromCart}
+                  result={hit}
+                  main={false}
+                  position={index}
+                  summary={data.summary}
+                  setCartCount={setCartCount}
+                ></AddResultButton>
+                <AddResultButton
+                  caption="Add Details (Product)"
+                  action={buttonResultActionEnum.addDetails}
+                  result={hit}
+                  main={false}
+                  position={index}
+                  summary={data.summary}
+                  updateCart={false}
+                ></AddResultButton>
+              </EuiFlexGroup>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFlexItem >
+      ))}
+    </EuiFlexGrid >
+  )
+};
 
 export default App;
