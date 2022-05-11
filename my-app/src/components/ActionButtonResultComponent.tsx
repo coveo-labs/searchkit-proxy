@@ -11,13 +11,8 @@ interface ButtonProps {
   summary: any;
   position: number;
   enabled: boolean;
-  updateCart: boolean;
   searchQueryId: any;
-};
-
-interface ButtonState {
-  result: any;
-  count: number;
+  setCartCount: any;
 };
 
 export enum buttonResultActionEnum {
@@ -27,16 +22,16 @@ export enum buttonResultActionEnum {
   addSearchItemClick = "AddSearchItemClick"
 };
 
-export class AddResultButton extends Component<ButtonProps, ButtonState> {
-  constructor(props) {
-    super(props);
-    const cartItems = CoveoUA.getCart();
+export class AddResultButton extends Component<ButtonProps> {
+  // constructor(props) {
+  //   super(props);
+  //   // const cartItems = CoveoUA.getCart();
 
-    this.state = {
-      result: this.props.result,
-      count: cartItems.length,
-    };
-  }
+  //   // this.state = {
+  //   //   result: this.props.result,
+  //   //   count: cartItems.length,
+  //   // };
+  // }
 
   createProductData() {
     let product = {};
@@ -65,7 +60,7 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     cart.push(product);
     CoveoUA.setCart(cart);
     CoveoUA.emitBasket(searchUid, cart, "add", product);
-    this.setState({ count: cart.length });
+    this.props.setCartCount(cart.length);
     //Also UV action
   }
 
@@ -78,14 +73,14 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
     for (var i = 0; i < cart.length; i++) {
       if (cart[i]["sku"] === product["sku"]) {
         cart.splice(i, 1);
-        //Sent the UA event
+        //Send the UA event
         CoveoUA.emitBasket(searchUid, cart, "remove", product);
-        i--;
+        break;
       }
     }
     //cart.remove(product);
     CoveoUA.setCart(cart);
-    this.setState({ count: cart.length });
+    this.props.setCartCount(cart.length);
     //Also UV action
   }
 
@@ -160,9 +155,6 @@ export class AddResultButton extends Component<ButtonProps, ButtonState> {
       enabled = true;
     }*/
     let caption = this.props.caption;
-    if (this.props.updateCart) {
-      caption += " (" + this.state.count + ")";
-    }
 
     return (
       <EuiButton

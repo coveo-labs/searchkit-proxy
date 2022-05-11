@@ -2,25 +2,21 @@ import React, { Component } from "react";
 import { EuiButton } from "@elastic/eui";
 
 import CoveoUA from "./CoveoAnalytics";
-// import { serialize } from "v8";
 
 interface ButtonProps {
   caption: string;
   results: any;
   action: buttonActionEnum;
-  main: boolean;
   coveoEnabled: boolean;
-  callback: any;
   hide: boolean;
   searchQueryId: any;
+  setCartCount: any;
 };
 
 export enum buttonActionEnum {
-  impressionsEvent = "ImpressionsEvent",
-  viewEvent = "ViewEvent",
-  emitBasketEvent = "BasketEvent",
+  // impressionsEvent = "ImpressionsEvent",
   purchaseEvent = "PurchaseEvent",
-  clearBasket = "ClearBasketEvent",
+  clearCart = "ClearCart",
 };
 
 export class AddButton extends Component<ButtonProps> {
@@ -47,7 +43,7 @@ export class AddButton extends Component<ButtonProps> {
       this.props.results.hits.items[0].fields["searchQueryUid"] || "";
     const cartId = searchUid;
     const cartItems = CoveoUA.getCart();
-    cartItems.forEach((product, index) => {
+    cartItems.forEach(product => {
       //const product_parsed = this.createProductData(product.fields);
       products.push(product);
       CoveoUA.addProductForPurchase(product);
@@ -58,10 +54,8 @@ export class AddButton extends Component<ButtonProps> {
       shipping: 0,
       tax,
     });
-    //Using Transaction
-    //CoveoUA.emitBasket(searchUid, cartItems, "remove", product);
-
     CoveoUA.emitBasket(cartId, products, "", null, transactionId);
+    this.clearCart({ bypassEventEmitting: true });
   }
 
   addImpressionsEvent() {
@@ -79,68 +73,45 @@ export class AddButton extends Component<ButtonProps> {
       coveoua("send", "event", CoveoUA.getOriginsAndCustomData());
     }
   }
-  
-  emitBasket() {
-    let products = [];
-    const searchUid =
-      this.props.results.hits.items[0].fields["searchQueryUid"] || "";
-    if (searchUid !== "") {
-      //get  the cart from the session
-      const cartItems = CoveoUA.getCart();
-      cartItems.forEach((product, index) => {
-        products.push(product);
-      });
-      CoveoUA.emitBasket(searchUid, cartItems, "", null);
-    }
-  }
 
-  clearBasket() {
-    let products = [];
-    const searchUid =
-      this.props.results.hits.items[0].fields["searchQueryUid"] || "";
-    if (searchUid !== "") {
-      //get  the cart from the session
-      const cartItems = CoveoUA.getCart();
-      cartItems.forEach((product, index) => {
-        products.push(product);
-        CoveoUA.emitBasket(searchUid, cartItems, "remove", product);
-        //(cartId: string, products: any, action: string, newproduct: any, transactionId?: string)
-      });
+  clearCart({ bypassEventEmitting = false }: { bypassEventEmitting?: boolean } = {}) {
+    const cartItems = CoveoUA.getCart();
+    if (cartItems.length) {
+      const searchUid = (
+        this.props.results.hits.items[0].fields["searchQueryUid"] || ""
+      );
+      while (cartItems.length) {
+        const itemIndex = cartItems.length - 1;
+        const product = cartItems[itemIndex];
+        if (!bypassEventEmitting) {
+          CoveoUA.emitBasket(searchUid, cartItems, "remove", product);
+        }
+        cartItems.splice(itemIndex, 1);
+      }
+      CoveoUA.setCart(cartItems);
+      this.props.setCartCount(0);
     }
   }
 
   addAction() {
-    if (this.props.main) {
-      if (this.props.callback) {
-        this.props.callback();
-      }
-    }
-    if (this.props.action === buttonActionEnum.emitBasketEvent) {
-      this.emitBasket();
-    }
-    if (this.props.action === buttonActionEnum.clearBasket) {
-      this.clearBasket();
+    if (this.props.action === buttonActionEnum.clearCart) {
+      this.clearCart();
     }
     if (this.props.action === buttonActionEnum.purchaseEvent) {
       this.addPurchase();
     }
-    if (this.props.action === buttonActionEnum.impressionsEvent) {
-      this.addImpressionsEvent();
-    }
+    // if (this.props.action === buttonActionEnum.impressionsEvent) {
+    //   this.addImpressionsEvent();
+    // }
   }
 
   render() {
-    let caption = this.props.caption;
-    if (this.props.action === buttonActionEnum.purchaseEvent) {
-      //const cartItems = CoveoUA.getCart();
-      //caption += " (" + cartItems.length + ")";
-    }
     return (
       <EuiButton
         style={{ marginRight: "10px", display: this.props.hide ? 'none' : 'initial' }}
         onClick={() => this.addAction()}
       >
-        {caption}
+        {this.props.caption}
       </EuiButton>
     );
   }

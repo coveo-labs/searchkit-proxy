@@ -4,17 +4,15 @@ import CoveoUA from "./CoveoAnalytics";
 
 import {
   getQubitTrackerId,
-  getQubitExperienceId,
+  getQubitExperienceIdParameter,
   getHostCoveo,
   getHostElastic,
 } from "./settings";
-// import { textChangeRangeIsUnchanged } from "typescript";
 
 interface EnableProxyProps {
   enableCaption: string;
   disableCaption: string;
   setHost: any;
-  setCallbackUrl: any;
 };
 
 interface EnableProxyState {
@@ -37,7 +35,7 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     };
   }
 
-  async getResponse(url, method) {
+  async getResponse(url: string, method: string) {
     const request = new Request(url);
 
     const response = await fetch(request, { method: method });
@@ -50,40 +48,31 @@ export class EnableProxy extends Component<EnableProxyProps, EnableProxyState> {
     //Check with https://sse.qubit.com/ if we need to enable Elastic or Coveo
     //We only do this once for each session
     let contextId = "";
-    const __qubitVisitorId = CoveoUA.getCookie("_qubitTracker");
 
-    //If we do not have a visitorId,  it will be generated
-    if (__qubitVisitorId !== null) {
-      contextId = `contextId=${__qubitVisitorId}`;
-      console.log("ContextId from localStorage: " + __qubitVisitorId);
-    }
     //Call sse
-    // with &preview --> you will always get the Variantion defined
-    const url = `https://sse.qubit.com/v1/${getQubitTrackerId()}/experiences?${contextId}${getQubitExperienceId()}`;
-    const results = await this.getResponse(url, "GET");
+    //with &preview --> you will always get the Variantion defined
+    const url = `https://sse.qubit.com/v1/${getQubitTrackerId()}/experiences?${contextId}&${getQubitExperienceIdParameter()}`;
+    const response = await this.getResponse(url, "GET");
     console.log("From EnableProxy.tsx");
-    console.log(results);
-    if (results) {
-      if (results["experiencePayloads"].length > 0) {
-        results["experiencePayloads"].map((experience) => {
-          //isControl: false means there will be no payload
-          const callbackUrl = experience["callback"];
-          fetch(callbackUrl, { method: 'POST' });
+    console.log("SSE Response: ", response);
+    if (response?.experiencePayloads?.length > 0) {
+      response.experiencePayloads.forEach((experience) => {
+        //isControl: false means there will be no payload
+        const { callback } = experience;
+        fetch(callback, { method: 'POST' });
 
-          if (experience["payload"]["enableCoveo"] === true) {
-            this.enableCoveo = true;
-          }
-          return false;
-        });
-      }
+        if (experience?.payload?.enableCoveo === true) {
+          this.enableCoveo = true;
+        }
+      });
       //Store the contextId as key
       if (contextId === "") {
-        localStorage.setItem("__qubitVisitorId", results["contextId"]);
-        CoveoUA.setCookie("_qubitTracker", results["contextId"], 365);
+        CoveoUA.setCookie("_qubitTracker", response["contextId"], 365);
       }
     }
-    if (this._isMounted)
+    if (this._isMounted) {
       this.setState({ enabled: this.enableCoveo, executed: true });
+    }
   }
 
   componentDidMount() {
